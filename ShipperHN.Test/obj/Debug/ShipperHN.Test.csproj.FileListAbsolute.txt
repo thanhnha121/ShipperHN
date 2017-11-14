@@ -1,0 +1,11 @@
+D:\ShipperHN\ShipperHN.Test\bin\Debug\ShipperHN.Test.dll
+D:\ShipperHN\ShipperHN.Test\bin\Debug\ShipperHN.Test.pdb
+D:\ShipperHN\ShipperHN.Test\bin\Debug\ShipperHN.Business.dll
+D:\ShipperHN\ShipperHN.Test\bin\Debug\Newtonsoft.Json.dll
+D:\ShipperHN\ShipperHN.Test\bin\Debug\EntityFramework.dll
+D:\ShipperHN\ShipperHN.Test\bin\Debug\Facebook.dll
+D:\ShipperHN\ShipperHN.Test\bin\Debug\ShipperHN.Business.pdb
+D:\ShipperHN\ShipperHN.Test\bin\Debug\EntityFramework.xml
+D:\ShipperHN\ShipperHN.Test\obj\Debug\ShipperHN.Test.csprojResolveAssemblyReference.cache
+D:\ShipperHN\ShipperHN.Test\obj\Debug\ShipperHN.Test.dll
+D:\ShipperHN\ShipperHN.Test\obj\Debug\ShipperHN.Test.pdb

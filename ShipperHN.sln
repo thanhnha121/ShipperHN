@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShipperHN.Business", "ShipperHN.Business\ShipperHN.Business.csproj", "{EB6ECC08-729C-4A08-AC0A-DD2AB9040C89}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShipperHN.Web", "ShipperHN.Web\ShipperHN.Web.csproj", "{004527AB-F413-478F-9788-0D189FB13C87}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EB6ECC08-729C-4A08-AC0A-DD2AB9040C89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB6ECC08-729C-4A08-AC0A-DD2AB9040C89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB6ECC08-729C-4A08-AC0A-DD2AB9040C89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB6ECC08-729C-4A08-AC0A-DD2AB9040C89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{004527AB-F413-478F-9788-0D189FB13C87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{004527AB-F413-478F-9788-0D189FB13C87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{004527AB-F413-478F-9788-0D189FB13C87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{004527AB-F413-478F-9788-0D189FB13C87}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

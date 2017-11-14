@@ -1,0 +1,51 @@
+﻿@using ShipperHN.Business.Entities
+@model List<Post>
+@{
+    DateTime bottomTime = new DateTime();
+    DateTime topTime = new DateTime();
+    string lastPostId = "x";
+    string firstPostId = "x";
+    if (Model.Count > 0)
+    {
+        bottomTime = Model[Model.Count - 1].InsertTime;
+        lastPostId = Model[Model.Count - 1].Idpost;
+
+        topTime = Model[0].InsertTime;
+        firstPostId = Model[0].Idpost;
+    }
+}
+
+@*data*@
+<div id="data-GetMorePosts"
+     data-bottomUrl=@Url.Action("GetMorePosts", "Post")
+     data-bottomTime="@bottomTime"
+     data-lastPostId=@lastPostId
+     data-updateUrl=@Url.Action("UpdateBottomStatus", "Post")>
+</div>
+<div id="data-GetNewPosts"
+     data-topUrl=@Url.Action("GetNewPosts", "Post")
+     data-topTime="@topTime"
+     data-firstPostId=@firstPostId
+     data-updateUrl=@Url.Action("UpdateTopStatus", "Post")>
+</div>
+<div id="data-GetNewLocationPostCount"
+     data-GetNewLocationPostCountUrl=@Url.Action("GetNewLocationPostCount", "Post")></div>
+<div id="data-FilterByLocation"
+     data-FilterByLocationUrl=@Url.Action("FilterByLocation", "Post")
+     data-updateUrl=@Url.Action("UpdateFilterStatus", "Post")></div>
+<div id="data-FilterByLocationGetBottom"
+     data-FilterByLocationGetBottomUrl="@Url.Action("FilterByLocationGetBottom", "Post")"
+     data-updateUrl=@Url.Action("UpdateFilterBottomStatus", "Post")></div>
+<div id="data-FilterByLocationGetTop"
+     data-FilterByLocationGetTopUrl="@Url.Action("FilterByLocationGetTop", "Post")"
+     data-updateUrl=@Url.Action("UpdateFilterTopStatus", "Post")></div>
+<div id="data-GetPost"
+     data-GetPostUrl="@Url.Action("GetPost", "Post")"></div>
+<div id="data-GetTop20CommentsFB"
+     data-GetTop20CommentsFBUrl="@Url.Action("GetTop20CommentsFB", "Comment")"></div>
+<div id="data-SearchUserByName"
+     data-SearchUserByNameUrl="@Url.Action("SearchUserByName", "User")"></div>
+<div id="data-SearchUserByPhone"
+     data-SearchUserByPhoneUrl="@Url.Action("SearchUserByPhone", "User")"></div>
+<div id="data-GetAllPostsByUserId"
+     data-GetAllPostsByUserIdUrl="@Url.Action("GetAllPostsByUserId", "Post")"></div>

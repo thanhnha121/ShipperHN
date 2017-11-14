@@ -1,0 +1,44 @@
+﻿@using ShipperHN.Business.Entities
+@model List<Comment>
+
+<hr />
+<div class="clear"></div>
+
+<div class="comments-title">
+    Comments
+</div>
+
+<div class="clear"></div>
+
+@if (Model.Count == 0)
+{
+    <br />
+    <div class="empty-comment">Không có bình luận nào!</div>
+}
+else
+{
+    foreach (Comment comment in Model)
+    {
+        <div class="comment">
+            <div class="sender-info">
+                <div class="comment-avatar">
+                    <a href=@string.Format("https://www.facebook.com/" + @comment.User.Id)><img src=@string.Format(@comment.User.AvataLink) alt="Avatar" /></a>
+                </div>
+
+            </div>
+
+            <div class="comment-content">
+                <div class="comment-name">
+                    <a>@comment.User.Name</a>
+                </div>
+
+                <div class="comment-message">
+                    @comment.Message
+                </div>
+                <div class="comment-date">
+                    @Html.Partial("~/Views/_Time.cshtml", comment.Time)
+                </div>
+            </div>
+        </div>
+    }
+}

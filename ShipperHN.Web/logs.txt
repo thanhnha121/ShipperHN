@@ -1,0 +1,23 @@
+[UNHANDLED] [23/03/2017 13:24:46] at [FetchData.cs/GetJsonData] Type: System.ArgumentNullException | Message: Value cannot be null.
+Parameter name: source | InnerException: 
+[UNHANDLED] [23/03/2017 13:27:12] at [FetchData.cs/GetJsonData] Type: System.ArgumentNullException | Message: Value cannot be null.
+Parameter name: source | InnerException: 
+
+[UNHANDLED] [23/03/2017 13:27:15] at [FetchData.cs/GetJsonData] Type: System.ArgumentNullException | Message: Value cannot be null.
+Parameter name: source | InnerException: 
+
+[UNHANDLED] [23/03/2017 13:27:32] at [FetchData.cs/GetJsonData] Type: System.ArgumentNullException | Message: Value cannot be null.
+Parameter name: source | InnerException: 
+
+[UNHANDLED] [23/03/2017 13:27:38] at [FetchData.cs/GetJsonData] Type: System.ArgumentNullException | Message: Value cannot be null.
+Parameter name: source | InnerException: 
+
+[UNHANDLED] [23/03/2017 13:27:43] at [FetchData.cs/GetJsonData] Type: System.ArgumentNullException | Message: Value cannot be null.
+Parameter name: source | InnerException: 
+
+[UNHANDLED] [23/03/2017 13:31:08] at [FetchData.cs/GetJsonData] Type: System.ArgumentNullException | Message: Value cannot be null.
+Parameter name: source | InnerException: 
+
+[UNHANDLED] [23/03/2017 13:31:10] at [FetchData.cs/GetJsonData] Type: System.ArgumentNullException | Message: Value cannot be null.
+Parameter name: source | InnerException: 
+

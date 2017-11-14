@@ -1,0 +1,38 @@
+﻿@using ShipperHN.Business.Entities
+@model List<User>
+
+<div class="result-title">
+    Kết quả tìm kiếm
+</div>
+
+@if (Model.Count == 0)
+{
+    <div class="result-empty">
+        Không tìm thấy kết quả nào!
+    </div>
+}
+
+else
+{
+    foreach (User user in Model)
+    {
+        <div class="result-content"  onclick="GetAllPostsByUserId('@user.Id')">
+            <div class="result-content-avatar">
+                <a href=@string.Format("https://www.facebook.com/" + @user.Id)><img src=@string.Format(@user.AvataLink) alt="Avatar" /></a>
+            </div>
+
+            <div class="result-content-name">
+                <a>@user.Name</a>
+            </div>
+            @if (   user.PhoneNumbers.Count > 0)
+            {
+                foreach (PhoneNumber phoneNumber in user.PhoneNumbers)
+                {
+                    <div class="result-content-phone">
+                        <a href="tel:@phoneNumber.Phone">@phoneNumber.Phone</a>
+                    </div>
+                }
+            }
+        </div>
+    }
+}

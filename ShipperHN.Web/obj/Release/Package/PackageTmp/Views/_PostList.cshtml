@@ -1,0 +1,54 @@
+﻿@using ShipperHN.Business.Entities
+@model List<Post>
+
+@foreach (Post post in Model)
+{
+    <article class="underline">
+        <div class="post-preview">
+            <a class="post-avatar" href=@string.Format("https://www.facebook.com/" + @post.User.Id)><img src=@string.Format(@post.User.AvataLink) alt="Avatar" /></a>
+            <a class="post-name">@post.User.Name</a>
+            @if (post.User.PhoneNumbers.Count > 0)
+            {
+                foreach (PhoneNumber phoneNumber in post.User.PhoneNumbers)
+                {
+                    <div class="post-phone">
+                        <a href="tel:@phoneNumber.Phone">@phoneNumber.Phone</a>
+                    </div>
+                }
+            }
+        </div>
+        <div class="post-content">
+            <div class="post-content-message">
+                @if (post.Message.Length > 120)
+                {
+                    <a onclick='GetPost("@post.Idpost")'>@string.Format(@post.Message.Substring(0, 100) + "...")</a>
+                }
+                else
+                {
+                    <a onclick='GetPost("@post.Idpost")'>@post.Message</a>
+                }
+            </div>
+            @if (!string.IsNullOrEmpty(post.FullPicture))
+            {
+                <a class="full-picture" onclick='GetPost("@post.Idpost")'><img src=@string.Format(@post.FullPicture) alt="Full Picture" /></a>
+            }
+
+            <div class="post-places">
+                @for (int i = 0; i < post.Places.Split(',').Count(); i++)
+                {
+                    if (!string.IsNullOrEmpty(post.Places.Split(',')[i]))
+                    {
+                        <a style="background: @post.GetColor(post.Places.Split(',')[i])" onclick='FilterByLocation("@post.Places.Split(',')[i]", "@post.GetLocationIndex(post.Places.Split(',')[i])", this)'>@post.Places.Split(',')[i].Trim()</a>
+                    }
+                }
+            </div>
+            <div class="date">
+                <span>
+                    @Html.Partial("~/Views/_Time.cshtml", post.CreatedTime)
+                </span>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </article>
+}
+
