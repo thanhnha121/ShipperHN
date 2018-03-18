@@ -7,11 +7,14 @@ namespace ShipperHN.Business.Entities
 {
     public class Post : ShipperHNAbstract
     {
+        [Key]
+        public int Id { get; set; }
+
         [Required]
         public User User { get; set; }
 
-        [Key, MaxLength(35), Column(TypeName = "VARCHAR")]
-        public string Idpost { get; set; }
+        [MaxLength(35), Column(TypeName = "VARCHAR")]
+        public string PostId { get; set; }
 
         [Required, MaxLength(1000), Column(TypeName = "NVARCHAR")]
         public string Message { get; set; }
@@ -30,10 +33,13 @@ namespace ShipperHN.Business.Entities
         [MaxLength(512), Column(TypeName = "NVARCHAR")]
         public string Places { get; set; }
 
+        public List<Location> Locations { get; set; }
+
         public Post()
         {
             Comments = new List<Comment>();
             FullPicture = String.Empty;
+            Locations = new List<Location>();
         }
 
     }

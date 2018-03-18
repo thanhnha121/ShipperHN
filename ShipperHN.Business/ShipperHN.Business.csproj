@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="CommentBusiness.cs" />
     <Compile Include="Entities\Comment.cs" />
+    <Compile Include="Entities\Location.cs" />
     <Compile Include="Entities\Notification.cs" />
     <Compile Include="Entities\PhoneNumber.cs" />
     <Compile Include="Entities\Post.cs" />

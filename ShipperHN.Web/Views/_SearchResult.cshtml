@@ -18,7 +18,9 @@ else
     {
         <div class="result-content"  onclick="GetAllPostsByUserId('@user.Id')">
             <div class="result-content-avatar">
-                <a href=@string.Format("https://www.facebook.com/" + @user.Id)><img src=@string.Format(@user.AvataLink) alt="Avatar" /></a>
+              <a href=@string.Format("https://www.facebook.com/" + @user.Id)>
+                <img src=@string.Format("https://graph.facebook.com/" + @user.UserId + "/picture?type=square") alt="Avatar"/>
+              </a>
             </div>
 
             <div class="result-content-name">

@@ -317,7 +317,7 @@ footer {
         }
 
         .options li img {
-            float: right;
+/*            float: right;*/
             width: 100%;
             display: inline-block;
             cursor: pointer;
@@ -633,9 +633,6 @@ footer {
     padding-right: 5px;
 }
 
-    .post-preview-popup .post-preview-popup-info {
-    }
-
         .post-preview-popup .post-preview-popup-info .post-preview-popup-avatar {
             text-align: center;
         }
@@ -690,7 +687,7 @@ footer {
                 display: inline-block;
                 color: white;
                 clear: both;
-                float: left;
+/*                float: left;*/
                 margin: 30px 0 0 0;
             }
 
@@ -734,14 +731,8 @@ footer {
                 width: 20%;
             }
 
-            .post-preview-popup .post-preview-popup-content .view-facebook a {
-            }
-
-        .post-preview-popup .post-preview-popup-content .post-preview-popup-places {
-        }
-
             .post-preview-popup .post-preview-popup-content .post-preview-popup-places a {
-                float: left;
+/*                float: left;*/
                 display: inline-block;
                 font-weight: bold;
                 font-size: 26px;
@@ -815,7 +806,7 @@ footer {
         width: 70%;
         padding-top: 5px;
         padding-bottom: 5px;
-        float: left;
+/*        float: left;*/
     }
 
         #comments .comment .sender-info {
@@ -823,11 +814,8 @@ footer {
             float: left;
             width: 17%;
         }
-
-            #comments .comment .sender-info .comment-avatar {
-            }
-
-                #comments .comment .sender-info .comment-avatar img {
+        
+        #comments .comment .sender-info .comment-avatar img {
                     width: 80%;
                     background: #f2f2f2;
                 }
@@ -836,7 +824,7 @@ footer {
 
         #comments .comment .comment-content {
             margin-left: 1%;
-            float: left;
+/*            float: left;*/
             display: inline-block;
             width: 80%;
         }

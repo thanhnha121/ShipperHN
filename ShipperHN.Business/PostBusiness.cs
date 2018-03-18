@@ -42,9 +42,9 @@ namespace ShipperHN.Business
             }
         }
 
-        public Post GetPostById(string idpost)
+        public Post GetPostById(string PostId)
         {
-            Post post = _shipperHNDBcontext.Posts.Where(x => x.Idpost.Equals(idpost))
+            Post post = _shipperHNDBcontext.Posts.Where(x => x.PostId.Equals(PostId))
                 .Include(x => x.User)
                 .Include(x => x.User.PhoneNumbers)
                 .Include(x => x.Comments)
@@ -69,9 +69,9 @@ namespace ShipperHN.Business
             return posts;
         }
 
-        public bool IsExists(string idPost)
+        public bool IsExists(string PostId)
         {
-            return _shipperHNDBcontext.Posts.FirstOrDefault(x => x.Idpost.Equals(idPost)) != null;
+            return _shipperHNDBcontext.Posts.FirstOrDefault(x => x.PostId.Equals(PostId)) != null;
         }
 
         public Post GetPost(JObject jo)
@@ -79,12 +79,12 @@ namespace ShipperHN.Business
             var createdTime = DateTime.Parse((string)jo["created_time"]);
             var userId = (string)jo["from"]["id"];
             var message = (string)jo["message"];
-            var idpost = (string)jo["id"];
+            var PostId = (string)jo["id"];
             var fullPicture = jo["full_picture"] != null ? (string)jo["full_picture"] : "";
             Post post = new Post
             {
                 CreatedTime = createdTime,
-                Idpost = idpost,
+                PostId = PostId,
                 Message = message,
                 User = _shipperHNDBcontext.Users.FirstOrDefault(x => x.Id.Equals(userId)),
                 InsertTime = DateTime.Now,
@@ -120,7 +120,7 @@ namespace ShipperHN.Business
 
             for (int i = 0; i < posts.Count; i++)
             {
-                if (posts[i].Idpost.Equals(firstPostId))
+                if (posts[i].PostId.Equals(firstPostId))
                 {
                     posts.RemoveRange(i, posts.Count - i);
                     break;
@@ -140,7 +140,7 @@ namespace ShipperHN.Business
 
             for (int i = 0; i < posts.Count; i++)
             {
-                if (posts[i].Idpost.Equals(firstPostId))
+                if (posts[i].PostId.Equals(firstPostId))
                 {
                     posts.RemoveRange(i, posts.Count - i);
                     break;
@@ -148,7 +148,7 @@ namespace ShipperHN.Business
             }
             if (posts.Count > 0)
             {
-                result = posts[posts.Count - 1].InsertTime + "@" + posts[0].Idpost;
+                result = posts[posts.Count - 1].InsertTime + "@" + posts[0].PostId;
             }
             else
             {
@@ -168,7 +168,7 @@ namespace ShipperHN.Business
 
             for (int i = 0; i < posts.Count; i++)
             {
-                if (posts[i].Idpost.Equals(lastPostId))
+                if (posts[i].PostId.Equals(lastPostId))
                 {
                     posts.RemoveRange(0, i);
                     break;
@@ -189,7 +189,7 @@ namespace ShipperHN.Business
 
             for (int i = 0; i < posts.Count; i++)
             {
-                if (posts[i].Idpost.Equals(lastPostId))
+                if (posts[i].PostId.Equals(lastPostId))
                 {
                     posts.RemoveRange(0, i);
                     break;
@@ -197,7 +197,7 @@ namespace ShipperHN.Business
             }
             if (posts.Count > 0)
             {
-                result = posts[posts.Count - 1].InsertTime + "@" + posts[posts.Count - 1].Idpost + "@false";
+                result = posts[posts.Count - 1].InsertTime + "@" + posts[posts.Count - 1].PostId + "@false";
             }
             else
             {
@@ -227,7 +227,7 @@ namespace ShipperHN.Business
                 .Take(20).ToList();
             if (posts.Count >= 20)
             {
-                result = posts[posts.Count - 1].Idpost + "@false";
+                result = posts[posts.Count - 1].PostId + "@false";
             }
             else
             {
@@ -247,7 +247,7 @@ namespace ShipperHN.Business
 
             for (int i = 0; i < posts.Count; i++)
             {
-                if (posts[i].Idpost.Equals(lastPostId))
+                if (posts[i].PostId.Equals(lastPostId))
                 {
                     posts.RemoveRange(0, i);
                     break;
@@ -266,7 +266,7 @@ namespace ShipperHN.Business
 
             for (int i = 0; i < posts.Count; i++)
             {
-                if (posts[i].Idpost.Equals(lastPostId))
+                if (posts[i].PostId.Equals(lastPostId))
                 {
                     posts.RemoveRange(0, i);
                     break;
@@ -274,7 +274,7 @@ namespace ShipperHN.Business
             }
             if (posts.Count > 0)
             {
-                result = posts[posts.Count - 1].InsertTime + "@" + posts[posts.Count - 1].Idpost + "@false";
+                result = posts[posts.Count - 1].InsertTime + "@" + posts[posts.Count - 1].PostId + "@false";
             }
             else
             {
@@ -293,7 +293,7 @@ namespace ShipperHN.Business
 
             for (int i = 0; i < posts.Count; i++)
             {
-                if (posts[i].Idpost.Equals(firstPostId))
+                if (posts[i].PostId.Equals(firstPostId))
                 {
                     posts.RemoveRange(i, posts.Count - i);
                     break;
@@ -311,7 +311,7 @@ namespace ShipperHN.Business
 
             for (int i = 0; i < posts.Count; i++)
             {
-                if (posts[i].Idpost.Equals(firstPostId))
+                if (posts[i].PostId.Equals(firstPostId))
                 {
                     posts.RemoveRange(i, posts.Count - i);
                     break;
@@ -319,7 +319,7 @@ namespace ShipperHN.Business
             }
             if (posts.Count > 0)
             {
-                result = posts[posts.Count - 1].InsertTime + "@" + posts[0].Idpost;
+                result = posts[posts.Count - 1].InsertTime + "@" + posts[0].PostId;
             }
             else
             {
@@ -338,19 +338,19 @@ namespace ShipperHN.Business
             return posts;
         }
 
-        public void AddPosts(string[] listIdPosts, string[] listIdUsers, string[] listUserNames, string[] listUserPictures,
+        public void AddPosts(string[] listPostIds, string[] listIdUsers, string[] listUserNames, string[] listUserPictures,
             string[] listMessages, DateTime[] listCreatedTimes)
         {
             List<Post> posts = new List<Post>();
-            DataHanding(posts, listIdPosts, listIdUsers, listUserNames, listUserPictures, listMessages, listCreatedTimes);
+            DataHanding(posts, listPostIds, listIdUsers, listUserNames, listUserPictures, listMessages, listCreatedTimes);
             AddPosts(posts);
         }
 
-        public void DataHanding(List<Post> posts, string[] listIdPosts, string[] listIdUsers, string[] listUserNames, string[] listUserPictures,
+        public void DataHanding(List<Post> posts, string[] listPostIds, string[] listIdUsers, string[] listUserNames, string[] listUserPictures,
             string[] listMessages, DateTime[] listCreatedTimes)
         {
             PhoneNumberBusiness phoneNumberBusiness = new PhoneNumberBusiness(_shipperHNDBcontext);
-            for (int i = 0; i < listIdPosts.Count(); i++)
+            for (int i = 0; i < listPostIds.Count(); i++)
             {
                 string message = listMessages[i];
 
@@ -360,17 +360,16 @@ namespace ShipperHN.Business
                 string userid = listIdUsers[i];
 
                 if (CheckMessage(message)                   //phone count > 5 => SIM sellers
-                    && !IsExists(listIdPosts[i])
-                    && !listIdPosts[i].Contains(userid))    //post of groups?
+                    && !IsExists(listPostIds[i])
+                    && !listPostIds[i].Contains(userid))    //post of groups?
                 {
                     User user;
                     if (_shipperHNDBcontext.Users.FirstOrDefault(x => x.Id.Equals(userid)) == null)
                     {
                         user = new User
                         {
-                            Id = userid,
+                            UserId = userid,
                             Name = listUserNames[i],
-                            AvataLink = listUserPictures[i],
                             LatestViewNotificationTime = DateTime.Now
                         };
                         _shipperHNDBcontext.Users.Add(user);
@@ -394,7 +393,7 @@ namespace ShipperHN.Business
                         User = user,
                         InsertTime = DateTime.Now,
                         Places = DectectLocation(message),
-                        Idpost = listIdPosts[i],
+                        PostId = listPostIds[i],
                         CreatedTime = listCreatedTimes[i],
                         Message = listMessages[i]
                     };

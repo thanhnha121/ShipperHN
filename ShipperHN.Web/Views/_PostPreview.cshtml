@@ -6,7 +6,9 @@
 
 <article class="post-preview-popup">
     <div class="post-preview-popup-info">
-        <a class="post-preview-popup-avatar" href=@string.Format("https://www.facebook.com/" + @post.User.Id)><img src=@string.Format(@post.User.AvataLink) alt="Avatar" /></a>
+      <a class="post-preview-popup-avatar" href=@string.Format("https://www.facebook.com/" + @post.User.Id)>
+        <img src=@string.Format("https://graph.facebook.com/" + @post.User.UserId + "/picture?type=square") alt="Avatar"/>
+      </a>
         <a class="post-preview-popup-name">@post.User.Name</a>
         @if (post.User.PhoneNumbers.Count > 0)
         {
@@ -43,7 +45,7 @@
             </span>
         </div>
         <div class="view-facebook">
-            <a href=@string.Format("https://www.facebook.com/" + @post.Idpost)><img src="~/Content/images/facebook.png"/></a>
+            <a href=@string.Format("https://www.facebook.com/" + @post.PostId)><img src="~/Content/images/facebook.png"/></a>
         </div>
     </div>
     <div class="clear"></div>

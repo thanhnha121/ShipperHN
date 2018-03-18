@@ -125,6 +125,7 @@ namespace ShipperHN.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateInput(false)]
         public void AddPosts(string data)
         {
             if(string.IsNullOrEmpty(data))

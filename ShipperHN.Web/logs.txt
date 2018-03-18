@@ -21,3 +21,95 @@ Parameter name: source | InnerException:
 [UNHANDLED] [23/03/2017 13:31:10] at [FetchData.cs/GetJsonData] Type: System.ArgumentNullException | Message: Value cannot be null.
 Parameter name: source | InnerException: 
 
+[UNHANDLED] [04/03/2018 18:12:04] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 18:12:05] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 18:30:51] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 18:30:51] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 18:30:52] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 18:30:53] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 18:30:53] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 18:30:54] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 18:30:54] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 18:30:55] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 18:30:56] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 18:30:56] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 18:30:57] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 18:30:57] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 18:30:58] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 18:30:59] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 18:30:59] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 18:31:00] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 18:31:00] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 18:31:01] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 18:31:02] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 18:31:02] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 18:31:03] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 18:31:29] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: Unable to connect to the remote server | InnerException: System.Net.Sockets.SocketException (0x80004005): A socket operation was attempted to an unreachable network 31.13.95.8:443
+   at System.Net.Sockets.Socket.DoConnect(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+
+[UNHANDLED] [04/03/2018 19:15:20] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 19:15:21] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 19:15:21] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 19:15:22] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 19:15:23] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 19:15:23] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 19:15:24] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 19:15:24] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 19:15:25] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 19:15:26] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 19:15:26] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 19:15:27] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 19:15:27] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 19:15:28] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 19:15:29] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 19:15:29] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 19:15:30] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 19:15:30] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 19:15:31] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 19:15:32] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+
+[UNHANDLED] [04/03/2018 19:15:32] at [FetchData.cs/GetAccessToken] Type: System.Net.WebException | Message: The remote name could not be resolved: 'graph.facebook.com' | InnerException: 
+

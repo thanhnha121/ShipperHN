@@ -22,7 +22,7 @@ namespace ShipperHN.Business.Entities
             "linear-gradient(to bottom, #79bbff 5%, #378de5 100%)"
         };
 
-        private static readonly string[] Locations =
+        public static readonly string[] Locations =
         {
             "ba đình",
             "hoàn kiếm",
@@ -75,7 +75,7 @@ namespace ShipperHN.Business.Entities
 
         public string GetColor(string input)
         {
-            int k = input.GetHashCode()%10;
+            int k = input.GetHashCode() % 10;
             if (k < 0)
             {
                 k = 0 - k;
@@ -88,7 +88,7 @@ namespace ShipperHN.Business.Entities
             string nothing = "nothing";
             DateTime dateTime = DateTime.Now;
             nothing += dateTime.ToString(CultureInfo.InvariantCulture);
-            
+
             byte[] dateToBytes = Encoding.UTF8.GetBytes(nothing);
 
             string result = "";

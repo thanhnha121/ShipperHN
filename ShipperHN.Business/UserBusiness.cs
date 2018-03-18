@@ -30,9 +30,8 @@ namespace ShipperHN.Business
             JObject jsonUser = JObject.Parse(userFetch);
             User user = new User
             {
-                Id = (string)jsonUser["id"],
+                UserId = (string)jsonUser["id"],
                 Name = (string)jsonUser["name"],
-                AvataLink = (string)jsonUser["picture"]["data"]["url"],
                 LatestViewNotificationTime = DateTime.Now
             };
             try
