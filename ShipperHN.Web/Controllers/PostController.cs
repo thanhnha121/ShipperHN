@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Web.Mvc;
 using ShipperHN.Business;
 using ShipperHN.Business.Entities;
 using ShipperHN.Business.HEAD;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using ShipperHN.Business.LOG;
 
 namespace ShipperHN.Web.Controllers
@@ -14,12 +16,13 @@ namespace ShipperHN.Web.Controllers
     {
         private readonly PostBusiness _postBusiness;
         private readonly LogControl _logControl;
+        private readonly ShipperHNDBcontext _shipperHndBcontext;
 
         public PostController()
         {
+            _shipperHndBcontext = new ShipperHNDBcontext();
             _logControl = new LogControl();
-            var shipperHndBcontext = new ShipperHNDBcontext();
-            _postBusiness = new PostBusiness(shipperHndBcontext);
+            _postBusiness = new PostBusiness(_shipperHndBcontext);
         }
 
         private DateTime DateTimeConverter(string input)
@@ -126,41 +129,76 @@ namespace ShipperHN.Web.Controllers
 
         [HttpPost]
         [ValidateInput(false)]
-        public void AddPosts(string data)
+        public string AddPosts(string data)
         {
             if(string.IsNullOrEmpty(data))
             {
-                return;
+                return "Error: Empty data!";
             }
-            int count = int.Parse(data.Split(new[] { "#COUNT#"}, StringSplitOptions.None)[0]);
-            string posts = data.Split(new[] { "#COUNT#" }, StringSplitOptions.None)[1];
-            string [] listIdPosts = new string[count];
-            string [] listUserNames = new string[count];
-            string [] listUserPictures = new string[count];
-            string [] listMessages = new string[count];
-            string [] listIdUsers = new string[count];
-            DateTime [] listCreatedTimes = new DateTime[count];
-            string[] tmp = posts.Split(new[] {"@@##@@"}, StringSplitOptions.None);
-            int k = 0;
-            for (int i = 0; i < count; i++)
+
+            try
             {
-                try
+                JObject json = JObject.Parse(data);
+                foreach (var jToken in json["list_posts"])
                 {
-                    listUserNames[i] = tmp[k++];
-                    listIdPosts[i] = tmp[k++];
-                    listIdUsers[i] = tmp[k++];
-                    listUserPictures[i] = tmp[k++];
-                    listMessages[i] = tmp[k++];
-                    listCreatedTimes[i] = DateTime.Parse(tmp[k++]);
+                    string user_fullname = jToken["user_fullname"].ToString();
+                    string user_picture = jToken["user_picture"].ToString();
+                    string user_url = jToken["user_url"].ToString();
+                    string user_id = jToken["user_id"].ToString();
+                    string message = jToken["message"].ToString();
+                    string post_id = jToken["post_id"].ToString();
+
+                    if (string.IsNullOrEmpty(user_url)
+                        || string.IsNullOrEmpty(message)
+                        || string.IsNullOrEmpty(post_id)
+                        )
+                    {
+                        continue;
+                    }
+                    if (_shipperHndBcontext.Posts.FirstOrDefault(x => x.PostId.Equals(post_id)) == null)
+                    {
+                        User user = null;
+                        if (_shipperHndBcontext.Users.FirstOrDefault(x => x.UserId.Equals(user_id)) == null)
+                        {
+                            user = _shipperHndBcontext.Users.Add(new User()
+                            {
+                                UserId = user_id,
+                                UserProfilePicture = user_picture,
+                                Name = user_fullname,
+                                UserProfileUrl = user_url
+                            });
+
+                        }
+                        else
+                        {
+                            user = _shipperHndBcontext.Users.FirstOrDefault(x => x.UserId.Equals(user_id));
+                        }
+
+//                        String locations = _postBusiness.DectectLocation(message);
+//
+//                        string[] split = locations.Split(',');
+                        
+
+                        Post post = new Post()
+                        {
+                            PostId = post_id,
+                            Message = message,
+                            User = user,
+                            CreatedTime = DateTime.Now
+                        };
+
+                        _shipperHndBcontext.Posts.Add(post);
+
+                        _shipperHndBcontext.SaveChanges();
+                    }
                 }
-                catch (Exception e)
-                {
-                    _logControl.AddLog(1, "PostController.cs/AddPosts", "Type: " + e.GetType()
-                                   + " | Message: " + e.Message + " | InnerException: " + e.InnerException);
-                }
-               
             }
-            _postBusiness.AddPosts(listIdPosts, listIdUsers, listUserNames, listUserPictures, listMessages, listCreatedTimes);
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+            
+            return "Success";
         }
 
         [HttpPost]

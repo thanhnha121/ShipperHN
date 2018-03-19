@@ -7,6 +7,7 @@ namespace ShipperHN.Business.Entities
     public class Comment : ShipperHNAbstract
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
 
         [MaxLength(35), Column(TypeName = "VARCHAR")]

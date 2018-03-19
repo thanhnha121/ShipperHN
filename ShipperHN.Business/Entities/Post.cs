@@ -8,6 +8,7 @@ namespace ShipperHN.Business.Entities
     public class Post : ShipperHNAbstract
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]
@@ -16,7 +17,7 @@ namespace ShipperHN.Business.Entities
         [MaxLength(35), Column(TypeName = "VARCHAR")]
         public string PostId { get; set; }
 
-        [Required, MaxLength(1000), Column(TypeName = "NVARCHAR")]
+        [Required, Column(TypeName = "NVARCHAR")]
         public string Message { get; set; }
 
         [Required]
@@ -39,7 +40,9 @@ namespace ShipperHN.Business.Entities
         {
             Comments = new List<Comment>();
             FullPicture = String.Empty;
+            Places = String.Empty;
             Locations = new List<Location>();
+            InsertTime = DateTime.Now;
         }
 
     }
