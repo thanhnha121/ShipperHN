@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using ShipperHN.Business.Entities;
 
 namespace ShipperHN.Business
 {
@@ -134,10 +134,11 @@ namespace ShipperHN.Business
             "sơn tây về", "ba vì về", "chương mỹ về", "đan phượng về", "phùng về", "đông anh về", "gia lâm về", "trâu quỳ về", "hoài đức về", "mê linh về", "mỹ đức về", "phú xuyên về", "phúc thọ về", "quốc oai về","sóc sơn về", "thạch thất về", "thanh oai về", "thanh trì về", "văn điển về", "thường tín về", "ứng hoà về", "vân đình về"
         };
 
-        public string DectectLocation(string message)
+        public List<Location> DectectLocation(string message)
         {
             string tmpMessage = message.ToLower();
-            string result = "";
+
+            List<Location> locations = new List<Location>();
 
             List<string[]> stringses = new List<string[]>
             {
@@ -155,112 +156,114 @@ namespace ShipperHN.Business
                 _thanhXuanUnit
             };
 
-            foreach (string[] strings in stringses)
+            string [] names =
             {
+                "bắc từ liêm",
+                "ba đình",
+                "cầu giấy",
+                "đống đa",
+                "hà đông",
+                "hai bà trưng",
+                "hoàn kiếm",
+                "hoàng mai",
+                "long biên",
+                "nam từ liêm",
+                "tây hồ",
+                "thanh xuân"
+            };
+
+            for (int n = 0; n < stringses.Count; n++)
+            {
+                string streets = "";
+                Location location = new Location();
                 bool passQuan = false;
                 bool passHuyen = false;
-                int tmpLength = strings.Count();
-                if (tmpMessage.Contains(strings[tmpLength - 1]))
+                int tmpLength = stringses[n].Length;
+                if (tmpMessage.Contains(stringses[n][tmpLength - 1]))
                 {
-                    result += strings[tmpLength - 1].Substring(0, strings[tmpLength - 1].Length - 3) + "|";
                     passQuan = true;
                 }
                 for (int i = 0; i < tmpLength - 1; i++)
                 {
-                    if (tmpMessage.Contains(strings[i]))
+                    if (tmpMessage.Contains(stringses[n][i]))
                     {
                         passHuyen = true;
-                        if (strings[i].Contains("từ ") && !strings[i].Contains(" đến") && !strings[i].Contains(" giao") && !strings[i].Contains(" sang") && !strings[i].Contains(" đi"))
+                        if (stringses[n][i].Contains("từ ") && !stringses[n][i].Contains(" đến") && !stringses[n][i].Contains(" giao") && !stringses[n][i].Contains(" sang") && !stringses[n][i].Contains(" đi"))
                         {
-                            result += strings[i].Substring(3, strings[i].Length - 3) + "|";
+                            streets += stringses[n][i].Substring(3, stringses[n][i].Length - 3) + ",";
                             break;
                         }
-                        if (strings[i].Contains(" đến") && !strings[i].Contains(" giao") && !strings[i].Contains(" sang") && !strings[i].Contains(" đi"))
+                        if (stringses[n][i].Contains(" đến") && !stringses[n][i].Contains(" giao") && !stringses[n][i].Contains(" sang") && !stringses[n][i].Contains(" đi"))
                         {
-                            result += strings[i].Substring(0, strings[i].Length - 4) + "|";
+                            streets += stringses[n][i].Substring(0, stringses[n][i].Length - 4) + ",";
                             break;
                         }
-                        if (strings[i].Contains(" sang") || strings[i].Contains(" giao") && !strings[i].Contains(" đi"))
+                        if (stringses[n][i].Contains(" sang") || stringses[n][i].Contains(" giao") && !stringses[n][i].Contains(" đi"))
                         {
-                            result += strings[i].Substring(0, strings[i].Length - 5) + "|";
+                            streets += stringses[n][i].Substring(0, stringses[n][i].Length - 5) + ",";
                             break;
                         }
-                        if (strings[i].Contains(" đi"))
+                        if (stringses[n][i].Contains(" đi"))
                         {
-                            result += strings[i].Substring(0, strings[i].Length - 3) + "|";
+                            streets += stringses[n][i].Substring(0, stringses[n][i].Length - 3) + ",";
                             break;
                         }
                     }
                 }
-                if (passHuyen && !passQuan && !result.Contains(strings[tmpLength - 1].Substring(0, strings[tmpLength - 1].Length - 3)))
+
+                if (!string.IsNullOrEmpty(streets) && streets[streets.Length - 1] == ',')
                 {
-                    result = strings[tmpLength - 1].Substring(0, strings[tmpLength - 1].Length - 3) + "|" + result;
+                    streets = streets.Substring(0, streets.Length - 1);
+                }
+                
+                if (passHuyen)
+                {
+                    location.Streets = streets;
+                }
+                if (passQuan || passHuyen)
+                {
+                    location.Name = names[n];
+                    locations.Add(location);
                 }
             }
 
+            string ngStreets = "";
             foreach (string s in _ngoaiThanhUnit)
             {
+                Location location = new Location();
                 bool passHuyen = false;
                 if (tmpMessage.Contains(s))
                 {
                     passHuyen = true;
                     if (s.Contains("từ ") && !s.Contains(" đến") && !s.Contains(" giao") && !s.Contains(" sang") && !s.Contains(" đi"))
                     {
-                        result += s.Substring(3, s.Length - 3) + "|";
+                        ngStreets += s.Substring(3, s.Length - 3) + ",";
                     }
                     else if (s.Contains(" đến") && !s.Contains(" giao") && !s.Contains(" sang") && !s.Contains(" đi"))
                     {
-                        result += s.Substring(0, s.Length - 4) + "|";
+                        ngStreets += s.Substring(0, s.Length - 4) + ",";
                         break;
                     }
                     else if (s.Contains(" sang") || s.Contains(" giao") && !s.Contains(" đi"))
                     {
-                        result += s.Substring(0, s.Length - 5) + "|";
+                        ngStreets += s.Substring(0, s.Length - 5) + ",";
                     }
                     else if (s.Contains(" đi"))
                     {
-                        result += s.Substring(0, s.Length - 3) + "|";
+                        ngStreets += s.Substring(0, s.Length - 3) + ",";
                     }
+                }
+                if (!string.IsNullOrEmpty(ngStreets) && ngStreets[ngStreets.Length - 1] == ',')
+                {
+                    ngStreets = ngStreets.Substring(0, ngStreets.Length - 1);
                 }
                 if (passHuyen)
                 {
-                    result = "ngoại thành|" + result;
+                    location.Name = "ngoại thành";
+                    location.Streets = ngStreets;
                 }
             }
-
-            List<string> list = new List<string>();
-            list.AddRange(result.Split('|'));
-            for (int i = 0; i < list.Count - 1; i++)
-            {
-                for (int j = i + 1; j < list.Count; j++)
-                {
-                    if (list[i].Equals(list[j]) || string.IsNullOrEmpty(list[i].Trim()))
-                    {
-                        list.RemoveAt(i);
-                        i--;
-                        break;
-                    }
-                }
-            }
-
-            result = "";
-
-            for (int i = 0; i < list.Count - 1; i++)
-            {
-                if (i != list.Count - 2)
-                {
-                    result += list[i] + ",";
-                }
-                else
-                {
-                    result += list[i];
-                }
-            }
-            if (!string.IsNullOrEmpty(list[list.Count - 1]))
-            {
-                result += "," + list[list.Count - 1];
-            }
-            return result;
+            return locations;
         }
 
     }

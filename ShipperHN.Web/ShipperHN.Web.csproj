@@ -131,14 +131,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\images\facebook.png" />
     <Content Include="Content\images\logo.png" />
+    <Content Include="Content\images\new-logo.png" />
     <Content Include="Content\images\options-menu-active.png" />
     <Content Include="Content\images\options-menu-not-active.png" />
     <Content Include="Content\images\options-search-active.png" />
     <Content Include="Content\images\options-search-not-active.png" />
     <Content Include="Content\images\location-active.gif" />
-    <Content Include="Content\images\shipperhn.png" />
     <Content Include="Content\loading-effect.css" />
     <Content Include="Content\Responsive.css" />
     <Content Include="Content\style.css" />
@@ -184,7 +183,6 @@
     <Content Include="Views\_Data.cshtml" />
     <Content Include="Views\_NeedJS.cshtml" />
     <Content Include="Views\Shared\_Loading.cshtml" />
-    <Content Include="Views\_PostPreview.cshtml" />
     <Content Include="Views\_Comments.cshtml" />
     <Content Include="Views\_SearchResult.cshtml" />
     <Content Include="Views\_SearchPostResult.cshtml" />

@@ -9,7 +9,7 @@ using ShipperHN.Business.LOG;
 
 namespace ShipperHN.Business
 {
-    class PhoneNumberBusiness
+    public class PhoneNumberBusiness
     {
         private readonly ShipperHNDBcontext _shipperHndBcontext;
         private readonly LogControl _logControl;
@@ -76,32 +76,19 @@ namespace ShipperHN.Business
             {
                 Phone = match.ToString()
             };
-            User u = _shipperHndBcontext.Users
-                    .Include(x => x.PhoneNumbers)
-                    .FirstOrDefault(x => x.Id.Equals(user.Id));
-            {
 
-                if (u != null)
+            try
+            {
+                if (user.PhoneNumbers.FirstOrDefault(y => y.Phone.Equals(pn.Phone)) == null)
                 {
-                    try
-                    {
-                        if (u.PhoneNumbers.FirstOrDefault(y => y.Phone.Equals(pn.Phone)) == null)
-                        {
-                            u.PhoneNumbers.Add(pn);
-                            _shipperHndBcontext.SaveChanges();
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        if (e.GetType() == typeof(DbUpdateException))
-                        {
-                            _logControl.AddLog(1, "PhoneNumberBusiness.cs/GetPhone", "Type: " + e.GetType()
-                                    + " | Message: " + e.Message + " | InnerException: " + e.InnerException);
-                            u.PhoneNumbers.Remove(pn);
-                            _shipperHndBcontext.SaveChanges();
-                        }
-                    }
+                    user.PhoneNumbers.Add(pn);
+                    _shipperHndBcontext.SaveChanges();
                 }
+            }
+            catch (Exception e)
+            {
+                _logControl.AddLog(1, "PhoneNumberBusiness.cs/GetPhone",
+                    "Type: " + e.GetType() + " | Message: " + e.Message + " | InnerException: " + e.InnerException);
             }
         }
     }

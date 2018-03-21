@@ -31,16 +31,12 @@ namespace ShipperHN.Business.Entities
         [MaxLength(512), Column(TypeName = "VARCHAR")]
         public string FullPicture { get; set; }
 
-        [MaxLength(512), Column(TypeName = "NVARCHAR")]
-        public string Places { get; set; }
-
         public List<Location> Locations { get; set; }
 
         public Post()
         {
             Comments = new List<Comment>();
             FullPicture = String.Empty;
-            Places = String.Empty;
             Locations = new List<Location>();
             InsertTime = DateTime.Now;
         }

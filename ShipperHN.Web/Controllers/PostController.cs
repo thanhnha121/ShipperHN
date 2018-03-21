@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Data.Entity;
 using System.Threading;
 using System.Web.Mvc;
 using ShipperHN.Business;
 using ShipperHN.Business.Entities;
 using ShipperHN.Business.HEAD;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ShipperHN.Business.LOG;
 
@@ -17,12 +18,14 @@ namespace ShipperHN.Web.Controllers
         private readonly PostBusiness _postBusiness;
         private readonly LogControl _logControl;
         private readonly ShipperHNDBcontext _shipperHndBcontext;
+        private readonly PhoneNumberBusiness _phoneNumberBusiness;
 
         public PostController()
         {
             _shipperHndBcontext = new ShipperHNDBcontext();
             _logControl = new LogControl();
             _postBusiness = new PostBusiness(_shipperHndBcontext);
+            _phoneNumberBusiness = new PhoneNumberBusiness(_shipperHndBcontext);
         }
 
         private DateTime DateTimeConverter(string input)
@@ -36,6 +39,7 @@ namespace ShipperHN.Web.Controllers
                 return DateTime.Parse(input);
             }
         }
+
         [HttpGet]
         public ActionResult GetMorePosts(string bottomTime, string lastPostId)
         {
@@ -114,13 +118,6 @@ namespace ShipperHN.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetPost(string idpost)
-        {
-            Post post = _postBusiness.GetPostById(idpost);
-            return PartialView("~/Views/_PostPreview.cshtml", post);
-        }
-
-        [HttpGet]
         public ActionResult GetAllPostsByUserId(string userid)
         {
             List<Post> posts = _postBusiness.GetAllPostsByUserId(userid);
@@ -131,7 +128,7 @@ namespace ShipperHN.Web.Controllers
         [ValidateInput(false)]
         public string AddPosts(string data)
         {
-            if(string.IsNullOrEmpty(data))
+            if (string.IsNullOrEmpty(data))
             {
                 return "Error: Empty data!";
             }
@@ -147,6 +144,7 @@ namespace ShipperHN.Web.Controllers
                     string user_id = jToken["user_id"].ToString();
                     string message = jToken["message"].ToString();
                     string post_id = jToken["post_id"].ToString();
+                    string full_picture = jToken["full_picture"].ToString();
 
                     if (string.IsNullOrEmpty(user_url)
                         || string.IsNullOrEmpty(message)
@@ -157,39 +155,81 @@ namespace ShipperHN.Web.Controllers
                     }
                     if (_shipperHndBcontext.Posts.FirstOrDefault(x => x.PostId.Equals(post_id)) == null)
                     {
-                        User user = null;
-                        if (_shipperHndBcontext.Users.FirstOrDefault(x => x.UserId.Equals(user_id)) == null)
+                        User user;
+                        if ((!string.IsNullOrEmpty(user_id) && _shipperHndBcontext.Users.FirstOrDefault(x => x.UserId.Equals(user_id)) == null)
+                            || (string.IsNullOrEmpty(user_id) && _shipperHndBcontext.Users.FirstOrDefault(x => x.UserProfileUrl.Equals(user_url)) == null))
                         {
-                            user = _shipperHndBcontext.Users.Add(new User()
+                            user = _shipperHndBcontext.Users.Add(new User
                             {
                                 UserId = user_id,
                                 UserProfilePicture = user_picture,
                                 Name = user_fullname,
                                 UserProfileUrl = user_url
                             });
-
                         }
                         else
                         {
-                            user = _shipperHndBcontext.Users.FirstOrDefault(x => x.UserId.Equals(user_id));
+                            if (string.IsNullOrEmpty(user_id))
+                            {
+                                user = _shipperHndBcontext.Users
+                                    .Include(t => t.PhoneNumbers)
+                                    .FirstOrDefault(t => t.UserProfileUrl.Equals(user_url));
+                            }
+                            else
+                            {
+                                user = _shipperHndBcontext.Users
+                                    .Include(t => t.PhoneNumbers)
+                                    .FirstOrDefault(t => t.UserId.Equals(user_id));
+                            }
+
                         }
 
-//                        String locations = _postBusiness.DectectLocation(message);
-//
-//                        string[] split = locations.Split(',');
-                        
+                        List<Location> locations = _postBusiness.DectectLocation(message);
 
-                        Post post = new Post()
+                        List<Match> matches = _phoneNumberBusiness.DetetectPhoneNumber(message);
+                        if (matches != null && matches.Count > 0)
+                        {
+                            foreach (Match match in matches)
+                            {
+                                _phoneNumberBusiness.GetPhone(match, user);
+                            }
+                        }
+
+                        List<Location> addLocations = new List<Location>();
+                        foreach (var location in locations)
+                        {
+                            addLocations.Add(_shipperHndBcontext.Locations.Add(location));
+                        }
+
+                        try
+                        {
+                            _shipperHndBcontext.SaveChanges();
+                        }
+                        catch (Exception ex)
+                        {
+                            continue;
+                        }
+
+                        Post post = new Post
                         {
                             PostId = post_id,
                             Message = message,
                             User = user,
-                            CreatedTime = DateTime.Now
+                            Locations = addLocations,
+                            CreatedTime = DateTime.Now,
+                            FullPicture = full_picture
                         };
 
                         _shipperHndBcontext.Posts.Add(post);
 
-                        _shipperHndBcontext.SaveChanges();
+                        try
+                        {
+                            _shipperHndBcontext.SaveChanges();
+                        }
+                        catch (Exception ex)
+                        {
+                            continue;
+                        }
                     }
                 }
             }
@@ -197,31 +237,8 @@ namespace ShipperHN.Web.Controllers
             {
                 return e.Message;
             }
-            
+
             return "Success";
-        }
-
-        [HttpPost]
-        public string TestLoginAngular(string email, string password, bool isRemember)
-        {
-            TestLoginAngularClass testLoginAngularClass = new TestLoginAngularClass
-            {
-                StatusCode = "FAILED",
-            };
-            if (email.Contains("admin") || email.Contains("guess"))
-            {
-                testLoginAngularClass.StatusCode = "SUCCESS";
-                testLoginAngularClass.State = "/dashboard-project";
-                testLoginAngularClass.TokenKey = "TokenKey";
-            }
-            return JsonConvert.SerializeObject(testLoginAngularClass);
-        }
-
-        public class TestLoginAngularClass
-        {
-            public string StatusCode { get; set; }
-            public string TokenKey { get; set; }
-            public string State { get; set; }
         }
 
         public ActionResult Index()

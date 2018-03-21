@@ -1,0 +1,71 @@
+﻿/*Smart phone nhỏ*/
+@media screen and (min-width: 240px) {
+}
+/*Iphone(480 x 640)*/
+@media screen and (min-width: 320px) {
+}
+/*Tablet nhỏ(480 x 640)*/
+@media screen and (min-width: 480px) {
+}
+/*Ipad dọc(768 x 1024)*/
+@media screen and (min-width: 768px) {
+    a.view-on-facebook {
+        font-size: 20px;
+    }
+}
+/*Ipad ngang(1024 x 768)*/
+@media screen and (min-width: 1024px) {
+    body {
+        text-align: center;
+    }
+    .wrap {
+        width: 1000px;
+        display: inline-block;
+        text-align: initial;
+        border-left: 1px solid #ccc;
+        border-right: 1px solid #ccc;
+        font-size: 16px;
+    }
+    .options li {
+        width: 37%;
+    }
+    .menu a {
+        font-size: 22px;
+    }
+    nav.vertical ul li {
+        padding: 0;
+    }
+    .logo img {
+        width: 300px;
+    }
+    .paginate ul li a, .paginate ul li span.current {
+        font-size: 20px;
+    }
+    .post-preview .post-name {
+        font-size: 20px;
+    }
+    .post-content .post-content-message {
+        font-size: 16px;
+    }
+    .date {
+        font-size: 14px;
+    }
+        .date span .date-old,
+        .date span .date-new {
+            padding: 4px 6px 5px 6px;
+        }
+
+    .post-preview .post-phone a {
+        font-size: 16px;
+    }
+
+    .search-box a {
+        padding: 15px 20px 5px 20px;
+    }
+    a.view-on-facebook {
+        font-size: 16px;
+    }
+    .post-content .post-places a {
+        font-size: 16px;
+    }
+}

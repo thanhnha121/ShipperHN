@@ -46,6 +46,7 @@ namespace ShipperHN.Business
         {
             Post post = _shipperHNDBcontext.Posts.Where(x => x.PostId.Equals(PostId))
                 .Include(x => x.User)
+                .Include(x => x.Locations)
                 .Include(x => x.User.PhoneNumbers)
                 .Include(x => x.Comments)
                 .FirstOrDefault();
@@ -56,6 +57,7 @@ namespace ShipperHN.Business
         {
             var posts = _shipperHNDBcontext.Posts
                 .Include(x => x.User)
+                .Include(x => x.Locations)
                 .Include(x => x.User.PhoneNumbers)
                 .OrderByDescending(x => x.InsertTime)
                 .Take(20)
@@ -88,7 +90,6 @@ namespace ShipperHN.Business
                 Message = message,
                 User = _shipperHNDBcontext.Users.FirstOrDefault(x => x.Id.Equals(userId)),
                 InsertTime = DateTime.Now,
-                Places = DectectLocation(message),
                 FullPicture = fullPicture
             };
             return post;
@@ -98,12 +99,14 @@ namespace ShipperHN.Business
         {
             string[] result = new string[13];
             string[] quans = new Post().GetLocations();
-            for (int i = 0; i < quans.Count(); i++)
+            for (int i = 0; i < quans.Length; i++)
             {
                 string quan = quans[i];
                 DateTime tmpDateTime = dateTimes[i];
                 int count =
-                    _shipperHNDBcontext.Posts.Where(x => x.Places.Contains(quan) && x.InsertTime > tmpDateTime)
+                    _shipperHNDBcontext.Posts
+                        .Where(x => x.Locations
+                            .Any(y => y.Streets.Contains(quan) || y.Name.Contains(quan)) && x.InsertTime > tmpDateTime)
                         .ToList().Count;
                 result[i] = quans[i] + "@" + count;
             }
@@ -114,6 +117,7 @@ namespace ShipperHN.Business
         {
             List<Post> posts = _shipperHNDBcontext.Posts
                 .Where(x => x.InsertTime >= topTime)
+                .Include(x => x.Locations)
                 .Include(x => x.User)
                 .Include(x => x.User.PhoneNumbers)
                 .OrderByDescending(x => x.InsertTime).ToList();
@@ -134,6 +138,7 @@ namespace ShipperHN.Business
             string result;
             List<Post> posts = _shipperHNDBcontext.Posts
                 .Where(x => x.InsertTime >= topTime)
+                .Include(x => x.Locations)
                 .Include(x => x.User)
                 .Include(x => x.User.PhoneNumbers)
                 .OrderByDescending(x => x.InsertTime).ToList();
@@ -162,6 +167,7 @@ namespace ShipperHN.Business
             List<Post> posts = _shipperHNDBcontext.Posts
                 .Where(x => x.InsertTime <= bottomTime)
                 .OrderByDescending(x => x.InsertTime)
+                .Include(x => x.Locations)
                 .Include(x => x.User)
                 .Include(x => x.User.PhoneNumbers)
                 .Take(20).ToList();
@@ -183,6 +189,7 @@ namespace ShipperHN.Business
             List<Post> posts = _shipperHNDBcontext.Posts
                 .Where(x => x.InsertTime <= bottomTime)
                 .OrderByDescending(x => x.InsertTime)
+                .Include(x => x.Locations)
                 .Include(x => x.User)
                 .Include(x => x.User.PhoneNumbers)
                 .Take(20).ToList();
@@ -210,7 +217,8 @@ namespace ShipperHN.Business
         public List<Post> FilterByLocation(string location)
         {
             List<Post> posts = _shipperHNDBcontext.Posts
-                .Where(x => x.Places.Contains(location))
+                .Where(x => x.Locations.Any(y => y.Streets.Contains(location) || y.Name.Contains(location)))
+                .Include(x => x.Locations)
                 .Include(x => x.User)
                 .Include(x => x.User.PhoneNumbers)
                 .OrderByDescending(x => x.InsertTime)
@@ -222,7 +230,9 @@ namespace ShipperHN.Business
         {
             string result;
             List<Post> posts = _shipperHNDBcontext.Posts
-                .Where(x => x.Places.Contains(location))
+                .Where(x => x.Locations.Any(y => y.Streets.Contains(location) || y.Name.Contains(location)))
+                .Include(x => x.User)
+                .Include(x => x.Locations)
                 .OrderByDescending(x => x.InsertTime)
                 .Take(20).ToList();
             if (posts.Count >= 20)
@@ -239,8 +249,9 @@ namespace ShipperHN.Business
         public List<Post> FilterByLocationGetBottom(DateTime bottomTime, string lastPostId, string location)
         {
             List<Post> posts = _shipperHNDBcontext.Posts
-                .Where(x => x.InsertTime <= bottomTime && x.Places.Contains(location))
+                .Where(x => x.InsertTime <= bottomTime && x.Locations.Any(y => y.Streets.Contains(location) || y.Name.Contains(location)))
                 .OrderByDescending(x => x.InsertTime)
+                .Include(x => x.Locations)
                 .Include(x => x.User)
                 .Include(x => x.User.PhoneNumbers)
                 .Take(20).ToList();
@@ -260,7 +271,9 @@ namespace ShipperHN.Business
         {
             string result;
             List<Post> posts = _shipperHNDBcontext.Posts
-                .Where(x => x.InsertTime <= bottomTime && x.Places.Contains(location))
+                .Where(x => x.InsertTime <= bottomTime && x.Locations.Any(y => y.Streets.Contains(location) || y.Name.Contains(location)))
+                .Include(x => x.Locations)
+                .Include(x => x.User)
                 .OrderByDescending(x => x.InsertTime)
                 .Take(20).ToList();
 
@@ -286,7 +299,8 @@ namespace ShipperHN.Business
         public List<Post> FilterByLocationGetTop(DateTime topTime, string firstPostId, string location)
         {
             List<Post> posts = _shipperHNDBcontext.Posts
-                .Where(x => x.InsertTime >= topTime && x.Places.Contains(location))
+                .Where(x => x.InsertTime >= topTime && x.Locations.Any(y => y.Streets.Contains(location) || y.Name.Contains(location)))
+                .Include(x => x.Locations)
                 .Include(x => x.User)
                 .Include(x => x.User.PhoneNumbers)
                 .OrderByDescending(x => x.InsertTime).ToList();
@@ -306,7 +320,7 @@ namespace ShipperHN.Business
         {
             string result;
             List<Post> posts = _shipperHNDBcontext.Posts
-                .Where(x => x.InsertTime >= topTime && x.Places.Contains(location))
+                .Where(x => x.InsertTime >= topTime && x.Locations.Any(y => y.Streets.Contains(location) || y.Name.Contains(location)))
                 .OrderByDescending(x => x.InsertTime).ToList();
 
             for (int i = 0; i < posts.Count; i++)
@@ -332,84 +346,12 @@ namespace ShipperHN.Business
         {
             List<Post> posts = new List<Post>();
             posts = _shipperHNDBcontext.Posts.Where(x => x.User.Id.Equals(userId))
+                .Include(x => x.Locations)
+                .Include(x => x.User.PhoneNumbers)
                 .Include(x => x.User)
                 .OrderByDescending(x => x.CreatedTime)
                 .ToList();
             return posts;
-        }
-
-        public void AddPosts(string[] listPostIds, string[] listIdUsers, string[] listUserNames, string[] listUserPictures,
-            string[] listMessages, DateTime[] listCreatedTimes)
-        {
-            List<Post> posts = new List<Post>();
-            DataHanding(posts, listPostIds, listIdUsers, listUserNames, listUserPictures, listMessages, listCreatedTimes);
-            AddPosts(posts);
-        }
-
-        public void DataHanding(List<Post> posts, string[] listPostIds, string[] listIdUsers, string[] listUserNames, string[] listUserPictures,
-            string[] listMessages, DateTime[] listCreatedTimes)
-        {
-            PhoneNumberBusiness phoneNumberBusiness = new PhoneNumberBusiness(_shipperHNDBcontext);
-            for (int i = 0; i < listPostIds.Count(); i++)
-            {
-                string message = listMessages[i];
-
-                //detected phone number in message
-                List<Match> matches = phoneNumberBusiness.DetetectPhoneNumber(message);
-
-                string userid = listIdUsers[i];
-
-                if (CheckMessage(message)                   //phone count > 5 => SIM sellers
-                    && !IsExists(listPostIds[i])
-                    && !listPostIds[i].Contains(userid))    //post of groups?
-                {
-                    User user;
-                    if (_shipperHNDBcontext.Users.FirstOrDefault(x => x.Id.Equals(userid)) == null)
-                    {
-                        user = new User
-                        {
-                            UserId = userid,
-                            Name = listUserNames[i],
-                            LatestViewNotificationTime = DateTime.Now
-                        };
-                        _shipperHNDBcontext.Users.Add(user);
-                        try
-                        {
-                            _shipperHNDBcontext.SaveChanges();
-                        }
-                        catch (Exception)
-                        {
-                            _shipperHNDBcontext.Users.Remove(user);
-                            _shipperHNDBcontext.SaveChanges();
-                        }
-                    }
-                    else
-                    {
-                        user = _shipperHNDBcontext.Users.FirstOrDefault(x => x.Id.Equals(userid));
-                    }
-
-                    Post post = new Post
-                    {
-                        User = user,
-                        InsertTime = DateTime.Now,
-                        Places = DectectLocation(message),
-                        PostId = listPostIds[i],
-                        CreatedTime = listCreatedTimes[i],
-                        Message = listMessages[i]
-                    };
-
-                    posts.Add(post);
-
-                    if (matches != null && matches.Count > 0)
-                    {
-                        foreach (Match match in matches)
-                        {
-                            phoneNumberBusiness.GetPhone(match, user);
-                        }
-                    }
-                }
-            }
-            
         }
 
         public bool CheckMessage(string message)

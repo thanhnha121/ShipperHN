@@ -14,19 +14,6 @@ namespace ShipperHN.Business.Migrations
 
         protected override void Seed(ShipperHNDBcontext context)
         {
-            ShipperHNAbstract hnAbstract = new User();
-            string[] listLocations = hnAbstract.GetLocations();
-            foreach (string location in listLocations)
-            {
-                if (context.Locations.FirstOrDefault(x => x.Title.Equals(location)) == null)
-                {
-                    context.Locations.Add(new Location
-                    {
-                        Title = location
-                    });
-                }
-            }
-            context.SaveChanges();
         }
 
         public static void Main(string[] args)

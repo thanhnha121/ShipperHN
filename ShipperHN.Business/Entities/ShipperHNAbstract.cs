@@ -10,16 +10,16 @@ namespace ShipperHN.Business.Entities
     {
         private static readonly string[] Colors =
         {
-            "linear-gradient(to bottom, #599bb3 5%, #408c99 100%)",
-            "linear-gradient(to bottom, gold 0,darkorange 50%)",
-            "linear-gradient(to bottom, #26759e 0,#133d5b 100%)",
-            "linear-gradient(to bottom, #48d1cc 0,#9370db 50%)",
-            "linear-gradient(to bottom, #bdb76b 0,#fc492d 50%)",
-            "linear-gradient(to bottom, #ffc477 5%, #fb9e25 100%)",
-            "linear-gradient(to bottom, #63b8ee 5%, #468ccf 100%)",
-            "linear-gradient(to bottom, #c123de 5%, #a20dbd 100%)",
-            "linear-gradient(to bottom, #fe1a00 5%, #ce0100 100%)",
-            "linear-gradient(to bottom, #79bbff 5%, #378de5 100%)"
+            "crimson",
+            "chocolate",
+            "royalblue",
+            "purple",
+            "orange",
+            "navy",
+            "gray",
+            "cornflowerblue",
+            "brown",
+            "limegreen"
         };
 
         public static readonly string[] Locations =
