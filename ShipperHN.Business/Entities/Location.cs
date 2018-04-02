@@ -18,11 +18,14 @@ namespace ShipperHN.Business.Entities
 
         public List<Post> Posts { get; set; }
 
+        public DateTime CreatedTime { get; set; }
+
         public Location()
         {
             Posts = new List<Post>();
             Name = String.Empty;
             Streets = String.Empty;
+            CreatedTime = DateTime.Now;
         }
     }
 }

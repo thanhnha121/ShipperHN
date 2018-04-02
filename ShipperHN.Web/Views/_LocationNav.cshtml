@@ -1,39 +1,27 @@
 ﻿@using ShipperHN.Business.Entities
 @model string[]
 @{
-    Post post = new Post();
-    int index = 0;
+  Post post = new Post();
+  int index = 0;
 }
 
 <div class="location-nav">
-    <div class="paginate">
-        <ul>
-            @foreach (string s in Model)
-            {
-                if (s.Contains("@"))
-                {
-                    string location = s.Split('@')[0];
-                    if (int.Parse(s.Split('@')[1]) > 0)
-                    {
-                        location += " (" + s.Split('@')[1] + ")";
-                    }
-                    <li>
-                        <span class="current" style="background: @post.GetColor(location.Trim())" 
-                              onclick='FilterByLocation("@s.Split('@')[0]", "@index", this)'>
-                            @location
-                        </span>
-                    </li>
-                }
-                else
-                {
-                    <li><span class="current" style="background: @post.GetColor(s.Trim())" 
-                              onclick='FilterByLocation("@s", "@index", this)'>@s</span>
-                    </li>
-                }
-                index++;
-            }
-        </ul>
-    </div>
+  <div class="paginate">
+    <ul>
+      @foreach (string s in Model)
+      {
+        <li>
+          <span class="current" style="background: @post.GetColor(s)"
+                onclick='FilterByLocation("@s", @index, this)'>
+            @s
+                <span class="count"></span>
+              </span>
+              <div class="selected"></div>
+            </li>
+            index++;
+          }
+    </ul>
+  </div>
 </div>
 
 <hr />

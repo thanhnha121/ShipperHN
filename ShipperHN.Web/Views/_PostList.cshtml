@@ -1,9 +1,10 @@
 ﻿@using ShipperHN.Business.Entities
-@model List<ShipperHN.Business.Entities.Post>
-
+@model List<Post>
 @foreach (Post post in Model)
 {
-  <article>
+  <article 
+    data-id="@post.Id"
+    data-time="@post.InsertTime">
     <div class="post-preview">
       <a class="post-avatar" href=@string.Format(string.IsNullOrEmpty(post.User.UserId)
                                     ? post.User.UserProfileUrl : "https://www.facebook.com/" + post.User.Id)>
@@ -39,14 +40,17 @@
       @foreach (Location location in post.Locations)
       {
         <div class="post-places">
-          <a style="background: @post.GetColor(location.Name)">
+          <a style="background: @post.GetColor(location.Name)"
+             onclick='FilterByLocation("@location.Name", -1, this)'>
             @location.Name
           </a>
           @for (int i = 0; i < location.Streets.Split(',').Length; i++)
           {
             if (!string.IsNullOrEmpty(location.Streets.Split(',')[i]))
             {
-              <a style="background: @post.GetColor(location.Streets.Split(',')[i])">
+              <a style="background: @post.GetColor(location.Streets.Split(',')[i])"
+                 onclick='FilterByLocation("@location.Streets.Split(',')[i]", 14, this)'
+                 >
                 @location.Streets.Split(',')[i].Trim()
               </a>
             }

@@ -1,47 +1,54 @@
-﻿@using ShipperHN.Business.Entities
+﻿@using System.Web.Optimization
+@using ShipperHN.Business.Entities
 @{
-  List<Post> posts = (List<Post>)ViewData["posts"];
+    List<Post> posts = (List<Post>) ViewData["posts"];
+    string location = (string)ViewData["location"];
 }
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  
-  <meta charset="utf-8"/>
+
+  <meta charset="utf-8" />
   <title>ShipperHN</title>
-  <link rel="icon" type="image/png" href="~/Content/images/new-logo.png"/>
-  <meta name="keywords" content="ship,shipper"/>
-  <meta name="description" content="ShipperHN - Mang đơn ship đến chân giường shipper!"/>
-  <link rel="stylesheet" href="~/Content/style.css" type="text/css"/>
-  <link rel="stylesheet" href="~/Content/Responsive.css" type="text/css"/>
-  <link rel="stylesheet" href="~/Content/loading-effect.css" type="text/css"/>
+  <link rel="icon" type="image/png" href="/Content/images/new-logo.png" />
+  <meta name="keywords" content="ship,shipper,shipperhn" />
+  <meta name="description" content="ShipperHN - Mang đơn ship tới chân giường shipper!" />
+  @Styles.Render("/bundles/css")
 
   <!-- Open Graph data -->
-  <meta property="og:title" content="ShipperHH - Mang đơn ship đến chân giường shipper!"/>
-  <meta property="og:type" content="website"/>
-  <meta property="og:url" content="http://www.shipperhn.com/"/>
-  <meta property="og:image" content="~/Content/images/logo.png"/>
-  <meta property="og:description" content="ShipperHH - Tìm Ship nhanh nhất - Nhận Ship nhanh nhất!"/>
+  <meta property="og:title" content="ShipperHN - Mang đơn ship tới chân giường shipper!" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="http://shipperhn.com/" />
+  <meta property="og:image" content="http://shipperhn.com/Content/images/thumb.jpg" />
+  <meta property="og:description" content="ShipperHN - Tìm Ship nhanh nhất - Nhận Ship nhanh nhất!" />
 
 </head>
 <body onload="onload()">
   <div class="wrap">
+    <div id="alert"></div>
+
     <header>
-      <div class="logo"><a href=@Url.Action("Index", "Post")><img src="~/Content/images/logo.png" alt="L O G O" /></a></div>
+      <div class="logo">
+        <a href="/">
+          <img src="/Content/images/logo.png" alt="L O G O" />
+        </a>
+      </div>
       <div class="options">
         <ul>
-          <li><img src="~/Content/images/options-search-not-active.png"></li>
-          <li><img src="~/Content/images/options-menu-not-active.png"></li>
+          <li><img src="/Content/images/options-search-not-active.png"></li>
+          <li><img src="/Content/images/options-menu-not-active.png"></li>
         </ul>
       </div>
       <div id="nearby">
-        <img src="~/Content/images/location-active.gif">
+        <img src="/Content/images/location-active.gif">
       </div>
       <div class="clear"></div>
       <div class="search-box">
-        <input id="txt-search" type="text" placeholder=@("#số_điện_thoại/@tên_người_dùng")>
+        <input id="txt-search" type="text" placeholder=@("#số_điện_thoại/@tên_người_dùng") maxlength="30">
         <a onclick="Search()">S E A R C H</a>
         <div class="clear"></div>
+        <div id="search-result"></div>
       </div>
       <nav class="vertical menu">
         <ul>
@@ -54,34 +61,23 @@
     </header>
 
     <div class="content">
+
       <div id="location-nav">
-        @Html.Partial("~/Views/_LocationNav.cshtml", new Post().GetLocations())
+        @Html.Partial("/Views/_LocationNav.cshtml", new Post().GetLocations())
       </div>
 
-      <div id="get-new-posts">
+      <div id="top-loading" style="display: none;">
+        @Html.Partial("/Views/Shared/_Loading.cshtml")
       </div>
 
       <div id="post-list">
-        @Html.Partial("~/Views/_PostList.cshtml", posts)
+        @Html.Partial("/Views/_PostList.cshtml", posts)
       </div>
 
-      <div id="get-more-posts">
+      <div id="bottom-loading" style="display: none;">
+        @Html.Partial("/Views/Shared/_Loading.cshtml")
       </div>
 
-      <div id="bottom-loading" style="display: none">
-        @Html.Partial("~/Views/Shared/_Loading.cshtml")
-      </div>
-    </div>
-  </div>
-
-  @Html.Partial("~/Views/_Data.cshtml", posts)
-
-  <div class="modal">
-    <div id="post-preview">
-    </div>
-
-    <div id="post-preview-close" onclick="ClosePostPreview()">
-      <a>C L O S E</a>
     </div>
   </div>
 
@@ -89,15 +85,9 @@
     <input type="button" value="T O P" onclick="BackToTop()" />
   </div>
 
-  <div id="search-result">
-  </div>
+  <div id="location-div" data-location="@location"></div>
 
-  <div id="alert">
-  </div>
-
-  <script src="~/js/jquery.min.js"></script>
-  <script src="~/js/jquery.cookie.js"></script>
-  <script src="~/js/home.js"></script>
+  @Scripts.Render("/bundles/js")
 
 </body>
 </html>

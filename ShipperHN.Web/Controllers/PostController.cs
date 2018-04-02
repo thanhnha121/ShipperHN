@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Data.Entity;
-using System.Threading;
+using System.Data.SqlClient;
 using System.Web.Mvc;
 using ShipperHN.Business;
 using ShipperHN.Business.Entities;
-using ShipperHN.Business.HEAD;
 using Newtonsoft.Json.Linq;
 using ShipperHN.Business.LOG;
 
@@ -16,16 +17,18 @@ namespace ShipperHN.Web.Controllers
     public class PostController : Controller
     {
         private readonly PostBusiness _postBusiness;
-        private readonly LogControl _logControl;
+        public LogControl Control { get; }
         private readonly ShipperHNDBcontext _shipperHndBcontext;
         private readonly PhoneNumberBusiness _phoneNumberBusiness;
+        private LogControl _logControl;
 
         public PostController()
         {
             _shipperHndBcontext = new ShipperHNDBcontext();
-            _logControl = new LogControl();
+            Control = new LogControl();
             _postBusiness = new PostBusiness(_shipperHndBcontext);
             _phoneNumberBusiness = new PhoneNumberBusiness(_shipperHndBcontext);
+            _logControl = new LogControl();
         }
 
         private DateTime DateTimeConverter(string input)
@@ -40,88 +43,184 @@ namespace ShipperHN.Web.Controllers
             }
         }
 
-        [HttpGet]
-        public ActionResult GetMorePosts(string bottomTime, string lastPostId)
+        [HttpPost]
+        public ActionResult LoadMorePost(string lastTime, string location, int[] listIds)
         {
-            List<Post> posts = _postBusiness.GetMorePosts(DateTimeConverter(bottomTime), lastPostId);
-            return PartialView("~/Views/_PostList.cshtml", posts);
-        }
 
-        [HttpGet]
-        public string UpdateBottomStatus(string bottomTime, string lastPostId)
-        {
-            return _postBusiness.UpdateBottomStatus(DateTimeConverter(bottomTime), lastPostId);
-        }
-
-        [HttpGet]
-        public ActionResult GetNewPosts(string topTime, string firstPostId)
-        {
-            List<Post> posts = _postBusiness.GetNewPosts(DateTimeConverter(topTime), firstPostId);
-            return PartialView("~/Views/_PostList.cshtml", posts);
-        }
-
-        [HttpGet]
-        public string UpdateTopStatus(string topTime, string firstPostId)
-        {
-            return _postBusiness.UpdateTopStatus(DateTimeConverter(topTime), firstPostId);
-        }
-
-        [HttpGet]
-        public ActionResult GetNewLocationPostCount(String[] locationsDatimes)
-        {
-            DateTime[] dateTimes = new DateTime[13];
-            for (int i = 0; i < locationsDatimes.Length; i++)
+            List<Post> posts = new List<Post>();
+            if (lastTime == null || listIds == null)
             {
-                dateTimes[i] = DateTimeConverter(locationsDatimes[i]);
+                return PartialView("~/Views/_PostList.cshtml", posts);
             }
-            string[] result = _postBusiness.GetNewLocationPostCount(dateTimes);
-            return PartialView("~/Views/_LocationNav.cshtml", result);
-        }
 
-        [HttpGet]
-        public ActionResult FilterByLocation(string location)
-        {
-            List<Post> posts = _postBusiness.FilterByLocation(location);
+            DateTime time = DateTime.Parse(lastTime);
+
+            if (!string.IsNullOrEmpty(location))
+            {
+                posts = _shipperHndBcontext.Posts
+                    .Include(x => x.User)
+                    .Include(x => x.Locations)
+                    .Include(x => x.User.PhoneNumbers)
+                    .Where(x => x.Locations.Any(y => y.Name.Contains(location) || y.Streets.Contains(location))
+                        && !listIds.Contains(x.Id) && x.InsertTime <= time)
+                    .OrderByDescending(x => x.InsertTime)
+                    .Take(20)
+                    .ToList();
+            }
+            else
+            {
+                posts = _shipperHndBcontext.Posts
+                    .Include(x => x.User)
+                    .Include(x => x.Locations)
+                    .Include(x => x.User.PhoneNumbers)
+                    .Where(x => !listIds.Contains(x.Id) && x.InsertTime <= time)
+                    .OrderByDescending(x => x.InsertTime)
+                    .Take(20)
+                    .ToList();
+            }
             return PartialView("~/Views/_PostList.cshtml", posts);
         }
 
-        [HttpGet]
-        public string UpdateFilterStatus(string location)
+        [HttpPost]
+        public ActionResult LoadPrePost(string topTime, string location, int[] listIds)
         {
-            return _postBusiness.UpdateFilterStatus(location);
+            List<Post> posts = new List<Post>();
+            if (topTime == null || listIds == null)
+            {
+                return PartialView("~/Views/_PostListLoadTop.cshtml", posts);
+            }
+            DateTime time = DateTime.Parse(topTime);
+            if (!string.IsNullOrEmpty(location))
+            {
+                posts = _shipperHndBcontext.Posts
+                    .Include(x => x.User)
+                    .Include(x => x.Locations)
+                    .Include(x => x.User.PhoneNumbers)
+                    .Where(x => x.Locations.Any(y => y.Name.Contains(location) || y.Streets.Contains(location))
+                        && !listIds.Contains(x.Id) && x.InsertTime >= time)
+                    .OrderByDescending(x => x.InsertTime)
+                    .Take(20)
+                    .ToList();
+            }
+            else
+            {
+                posts = _shipperHndBcontext.Posts
+                    .Include(x => x.User)
+                    .Include(x => x.Locations)
+                    .Include(x => x.User.PhoneNumbers)
+                    .Where(x => !listIds.Contains(x.Id) && x.InsertTime >= time)
+                    .OrderByDescending(x => x.InsertTime)
+                    .Take(20)
+                    .ToList();
+            }
+            ViewData["posts"] = posts;
+            return PartialView("~/Views/_PostListLoadTop.cshtml", posts);
         }
 
-        [HttpGet]
-        public ActionResult FilterByLocationGetBottom(string bottomTime, string lastPostId, string location)
+        [HttpPost]
+        public ActionResult Search(string input)
         {
-            List<Post> posts = _postBusiness.FilterByLocationGetBottom(DateTimeConverter(bottomTime), lastPostId, location);
-            return PartialView("~/Views/_PostList.cshtml", posts);
+            List<Post> posts;
+            if (input.StartsWith("@"))
+            {
+                string searchInput = input.Substring(1, input.Length - 1);
+                posts = _shipperHndBcontext.Posts
+                    .Include(x => x.User)
+                    .Include(x => x.Locations)
+                    .Include(x => x.User.PhoneNumbers)
+                    .Where(x => x.User.PhoneNumbers.Any(y => y.Phone.Contains(searchInput)))
+                    .OrderByDescending(x => x.InsertTime)
+                    .Take(20)
+                    .ToList();
+            }
+            else if (input.StartsWith("#"))
+            {
+                string searchInput = input.Substring(1, input.Length - 1);
+                posts = _shipperHndBcontext.Posts
+                    .Include(x => x.User)
+                    .Include(x => x.Locations)
+                    .Include(x => x.User.PhoneNumbers)
+                    .Where(x => x.User.Name.Contains(searchInput))
+                    .OrderByDescending(x => x.InsertTime)
+                    .Take(20)
+                    .ToList();
+            }
+            else
+            {
+                string searchInput = input.ToLower();
+                posts = _shipperHndBcontext.Posts
+                    .Include(x => x.User)
+                    .Include(x => x.Locations)
+                    .Include(x => x.User.PhoneNumbers)
+                    .Where(x => x.Message.ToLower().Contains(searchInput)
+                        || x.PostId.Contains(searchInput))
+                    .OrderByDescending(x => x.InsertTime)
+                    .Take(20)
+                    .ToList();
+            }
+            return PartialView("~/Views/_SearchResult.cshtml", posts);
         }
 
-        [HttpGet]
-        public string UpdateFilterBottomStatus(string bottomTime, string lastPostId, string location)
+        [HttpPost]
+        public string LoadNoti(string[] districts)
         {
-            return _postBusiness.UpdateFilterBottomStatus(DateTimeConverter(bottomTime), lastPostId, location);
-        }
+            string result = "";
+            if (districts.Length == 0)
+            {
+                return result;
+            }
 
-        [HttpGet]
-        public ActionResult FilterByLocationGetTop(string topTime, string firstPostId, string location)
-        {
-            List<Post> posts = _postBusiness.FilterByLocationGetTop(DateTimeConverter(topTime), firstPostId, location);
-            return PartialView("~/Views/_PostList.cshtml", posts);
-        }
+            DateTime[] input = new DateTime[districts.Length];
+            for (int i = 0; i < districts.Length; i++)
+            {
+                input[i] = DateTime.Parse(districts[i]);
+            }
+            string connectionString = ConfigurationManager.ConnectionStrings["connString"].ConnectionString;
 
-        [HttpGet]
-        public string UpdateFilterTopStatus(string topTime, string firstPostId, string location)
-        {
-            return _postBusiness.UpdateFilterTopStatus(DateTimeConverter(topTime), firstPostId, location);
-        }
+            using (var conn = new SqlConnection(connectionString))
+            using (var command = new SqlCommand("GetLocationNoti", conn)
+            {
+                CommandType = CommandType.StoredProcedure
+            })
+            {
+                conn.Open();
 
-        [HttpGet]
-        public ActionResult GetAllPostsByUserId(string userid)
-        {
-            List<Post> posts = _postBusiness.GetAllPostsByUserId(userid);
-            return PartialView("~/Views/_SearchPostResult.cshtml", posts);
+                command.Parameters.Add("@badinhdate", SqlDbType.DateTime).Value = input[0];
+                command.Parameters.Add("@hoankiemdate", SqlDbType.DateTime).Value = input[1];
+                command.Parameters.Add("@tayhodate", SqlDbType.DateTime).Value = input[2];
+                command.Parameters.Add("@longbiendate", SqlDbType.DateTime).Value = input[3];
+                command.Parameters.Add("@caugiaydate", SqlDbType.DateTime).Value = input[4];
+                command.Parameters.Add("@dongdadate", SqlDbType.DateTime).Value = input[5];
+                command.Parameters.Add("@haibatrungdate", SqlDbType.DateTime).Value = input[6];
+                command.Parameters.Add("@hoangmaidate", SqlDbType.DateTime).Value = input[7];
+                command.Parameters.Add("@thanhxuandate", SqlDbType.DateTime).Value = input[8];
+                command.Parameters.Add("@hadongdate", SqlDbType.DateTime).Value = input[9];
+                command.Parameters.Add("@bactuliemdate", SqlDbType.DateTime).Value = input[10];
+                command.Parameters.Add("@namtuliemdate", SqlDbType.DateTime).Value = input[11];
+                command.Parameters.Add("@ngoaithanhdate", SqlDbType.DateTime).Value = input[12];
+
+                var dataReader = command.ExecuteReader();
+                int index = 0;
+
+                while (dataReader.HasRows)
+                {
+                    while (dataReader.Read())
+                    {
+                        result += dataReader.GetInt32(0);
+                        if (index != districts.Length - 1)
+                        {
+                            result += ",";
+                        }
+                        index++;
+                    }
+                    dataReader.NextResult();
+                }
+
+                dataReader.Close();
+                conn.Close();
+            }
+
+            return result;
         }
 
         [HttpPost]
@@ -153,11 +252,13 @@ namespace ShipperHN.Web.Controllers
                     {
                         continue;
                     }
-                    if (_shipperHndBcontext.Posts.FirstOrDefault(x => x.PostId.Equals(post_id)) == null)
+                    string check = message.Length >= 50 ? message.Substring(0, 50) : message;
+                    if (_shipperHndBcontext.Posts.FirstOrDefault(x => x.PostId.Equals(post_id)) == null
+                        && _shipperHndBcontext.Posts.FirstOrDefault(x => x.Message.Contains(check)) == null)
                     {
                         User user;
-                        if ((!string.IsNullOrEmpty(user_id) && _shipperHndBcontext.Users.FirstOrDefault(x => x.UserId.Equals(user_id)) == null)
-                            || (string.IsNullOrEmpty(user_id) && _shipperHndBcontext.Users.FirstOrDefault(x => x.UserProfileUrl.Equals(user_url)) == null))
+                        if (!string.IsNullOrEmpty(user_id) && _shipperHndBcontext.Users.FirstOrDefault(x => x.UserId.Equals(user_id)) == null
+                            || string.IsNullOrEmpty(user_id) && _shipperHndBcontext.Users.FirstOrDefault(x => x.UserProfileUrl.Equals(user_url)) == null)
                         {
                             user = _shipperHndBcontext.Users.Add(new User
                             {
@@ -166,6 +267,15 @@ namespace ShipperHN.Web.Controllers
                                 Name = user_fullname,
                                 UserProfileUrl = user_url
                             });
+                            try
+                            {
+                                _shipperHndBcontext.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                _logControl.AddLog(1, "AddPosts", ex.Message);
+                                // ignored
+                            }
                         }
                         else
                         {
@@ -205,8 +315,9 @@ namespace ShipperHN.Web.Controllers
                         {
                             _shipperHndBcontext.SaveChanges();
                         }
-                        catch (Exception ex)
+                        catch (Exception exception)
                         {
+                            _logControl.AddLog(1, "AddPosts", exception.Message);
                             continue;
                         }
 
@@ -226,29 +337,54 @@ namespace ShipperHN.Web.Controllers
                         {
                             _shipperHndBcontext.SaveChanges();
                         }
-                        catch (Exception ex)
+                        catch (Exception e)
                         {
-                            continue;
+                            _logControl.AddLog(1, "AddPosts", e.Message);
+                            // ignored
                         }
                     }
                 }
             }
             catch (Exception e)
             {
+                _logControl.AddLog(1, "AddPosts", e.Message);
                 return e.Message;
             }
 
             return "Success";
         }
 
-        public ActionResult Index()
+        public ActionResult Index(string url)
         {
-            FetchData fetchData = new FetchData(new ShipperHNDBcontext());
-            Thread t = new Thread(fetchData.Run);
-            t.Start();
-            List<Post> posts = _postBusiness.Top20Post();
-            ViewData["posts"] = posts;
-            return View();
+            if (string.IsNullOrEmpty(url))
+            {
+                List<Post> posts = _shipperHndBcontext.Posts
+                    .Include(x => x.User)
+                    .Include(x => x.Locations)
+                    .Include(x => x.User.PhoneNumbers)
+                    .OrderByDescending(x => x.InsertTime)
+                    .Take(7)
+                    .ToList();
+                ViewData["location"] = string.Empty;
+                ViewData["posts"] = posts;
+                return View();
+            }
+            else
+            {
+                string localtion = url.Replace("-", " ").ToLower();
+                List<Post> posts = _shipperHndBcontext.Posts
+                    .Where(x => x.Locations.Any(y => y.Name.ToLower().Contains(localtion)
+                        || y.Streets.ToLower().Contains(localtion)))
+                    .Include(x => x.User)
+                    .Include(x => x.Locations)
+                    .Include(x => x.User.PhoneNumbers)
+                    .OrderByDescending(x => x.InsertTime)
+                    .Take(7)
+                    .ToList();
+                ViewData["posts"] = posts;
+                ViewData["location"] = localtion;
+                return View();
+            }
         }
 
     }

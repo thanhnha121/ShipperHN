@@ -1,8 +1,22 @@
-﻿/*Smart phone nhỏ*/
-@media screen and (min-width: 240px) {
-}
-/*Iphone(480 x 640)*/
+﻿/*Iphone(480 x 640)*/
 @media screen and (min-width: 320px) {
+    .wrap #nearby img {
+        margin-top: 25px;
+        float: right;
+        width: 140px;
+    }
+    div#location-nav {
+        height: 194px;
+    }
+    .post-content .post-content-message {
+        font-size: 14px;
+    }
+
+    .logo img {
+        width: 300px;
+        margin-top: 50px;
+        margin-left: 30px;
+    }
 }
 /*Tablet nhỏ(480 x 640)*/
 @media screen and (min-width: 480px) {
@@ -13,6 +27,7 @@
         font-size: 20px;
     }
 }
+
 /*Ipad ngang(1024 x 768)*/
 @media screen and (min-width: 1024px) {
     body {
@@ -24,6 +39,7 @@
         text-align: initial;
         border-left: 1px solid #ccc;
         border-right: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
         font-size: 16px;
     }
     .options li {
@@ -37,6 +53,8 @@
     }
     .logo img {
         width: 300px;
+        margin-top: 35px;
+        margin-left: 30px;
     }
     .paginate ul li a, .paginate ul li span.current {
         font-size: 20px;
@@ -52,15 +70,15 @@
     }
         .date span .date-old,
         .date span .date-new {
-            padding: 4px 6px 5px 6px;
+            padding: 5px 6px 4px 6px;
         }
 
     .post-preview .post-phone a {
         font-size: 16px;
     }
 
-    .search-box a {
-        padding: 15px 20px 5px 20px;
+    .search-box > a {
+        padding: 19px 20px 5px 20px;
     }
     a.view-on-facebook {
         font-size: 16px;
@@ -68,4 +86,12 @@
     .post-content .post-places a {
         font-size: 16px;
     }
+    .wrap #nearby img {
+        margin-top: 15px;
+        width: 140px;
+    }
+    div#location-nav {
+        height: auto;
+    }
+
 }

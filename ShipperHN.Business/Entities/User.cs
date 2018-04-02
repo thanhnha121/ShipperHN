@@ -14,10 +14,10 @@ namespace ShipperHN.Business.Entities
         [MaxLength(30), Column(TypeName = "VARCHAR")]
         public string UserId { get; set; }
 
-        [MaxLength(255), Column(TypeName = "NVARCHAR")]
+        [MaxLength(255), Column(TypeName = "VARCHAR")]
         public string UserProfileUrl { get; set; }
 
-        [MaxLength(255), Column(TypeName = "NVARCHAR")]
+        [MaxLength(255), Column(TypeName = "VARCHAR")]
         public string UserProfilePicture{ get; set; }
 
         [MaxLength(255), Column(TypeName = "NVARCHAR")]
@@ -32,7 +32,7 @@ namespace ShipperHN.Business.Entities
         [NotMapped]
         List<Notification> Notifications { get; set; } 
             
-        [MinLength(6), MaxLength(16), Column(TypeName = "VARCHAR")]
+        [MaxLength(16), Column(TypeName = "VARCHAR")]
         public string Username { get; set; }
 
         public List<PhoneNumber> PhoneNumbers { get; set; }

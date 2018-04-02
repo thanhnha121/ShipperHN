@@ -284,67 +284,67 @@ namespace ShipperHN.Business.HEAD
         public void Run()
         {
             string fetchFlag = WebConfigurationManager.AppSettings["FetchFlag"];
-            if (fetchFlag.Equals("Pausing"))
-            {
-                try
-                {
-                    if (_shipperHndBcontext.Posts.Count() > 10000)
-                    {
-                        List<Post> posts = _shipperHndBcontext.Posts.OrderBy(x => x.CreatedTime)
-                            .Include(x => x.User.PhoneNumbers)
-                            .Include(x => x.User)
-                            .Include(x => x.Comments)
-                            .Take(5000).ToList();
-                        List<User> users = posts.Select(x => x.User).ToList();
-                        List<List<Comment>> commentLists = posts.Select(x => x.Comments).ToList();
-                        List<Comment> comments = new List<Comment>();
-                        foreach (List<Comment> commentList in commentLists)
-                        {
-                            comments.AddRange(commentList);
-                        }
-                        List<List<PhoneNumber>> phoneNumberLists = posts.Select(x => x.User.PhoneNumbers).ToList();
-                        List<PhoneNumber> phoneNumbers = new List<PhoneNumber>();
-                        foreach (List<PhoneNumber> numbers in phoneNumberLists)
-                        {
-                            phoneNumbers.AddRange(numbers);
-                        }
-
-                        _shipperHndBcontext.Comments.RemoveRange(comments);
-                        _shipperHndBcontext.Posts.RemoveRange(posts);
-                        _shipperHndBcontext.PhoneNumbers.RemoveRange(phoneNumbers);
-                        _shipperHndBcontext.Users.RemoveRange(users);
-                        _shipperHndBcontext.SaveChanges();
-                    }
-                }
-                catch (Exception e)
-                {
-                    _logControl.AddLog(1, "FetchData.cs/Run", "Type: " + e.GetType()
-                        + " | Message: " + e.Message + " | InnerException: " + e.InnerException);
-                }
-                // set fetch flag to running
-                WebConfigurationManager.AppSettings["FetchFlag"] = "Running";
-                int count = 0; //count of sessions
-                GetAccessToken();
-                //GetAccessTokenKey();
-                while (count < 5000)
-                {
-                    count++;
-                    try
-                    {
-                        DoFetch();
-                    }
-                    catch (WebExceptionWrapper e)
-                    {
-                        _logControl.AddLog(1, "FetchData.cs/Run", "Type: " + e.GetType()
-                        + " | Message: " + e.Message + " | InnerException: " + e.InnerException);
-                        Thread.Sleep(500);
-                    }
-                    Thread.Sleep(500);
-                }
-
-                // reset fetch flag
-                WebConfigurationManager.AppSettings["FetchFlag"] = "Pausing";
-            }
+//            if (fetchFlag.Equals("Pausing"))
+//            {
+//                try
+//                {
+//                    if (_shipperHndBcontext.Posts.Count() > 10000)
+//                    {
+//                        List<Post> posts = _shipperHndBcontext.Posts.OrderBy(x => x.CreatedTime)
+//                            .Include(x => x.User.PhoneNumbers)
+//                            .Include(x => x.User)
+//                            .Include(x => x.Comments)
+//                            .Take(5000).ToList();
+//                        List<User> users = posts.Select(x => x.User).ToList();
+//                        List<List<Comment>> commentLists = posts.Select(x => x.Comments).ToList();
+//                        List<Comment> comments = new List<Comment>();
+//                        foreach (List<Comment> commentList in commentLists)
+//                        {
+//                            comments.AddRange(commentList);
+//                        }
+//                        List<List<PhoneNumber>> phoneNumberLists = posts.Select(x => x.User.PhoneNumbers).ToList();
+//                        List<PhoneNumber> phoneNumbers = new List<PhoneNumber>();
+//                        foreach (List<PhoneNumber> numbers in phoneNumberLists)
+//                        {
+//                            phoneNumbers.AddRange(numbers);
+//                        }
+//
+//                        _shipperHndBcontext.Comments.RemoveRange(comments);
+//                        _shipperHndBcontext.Posts.RemoveRange(posts);
+//                        _shipperHndBcontext.PhoneNumbers.RemoveRange(phoneNumbers);
+//                        _shipperHndBcontext.Users.RemoveRange(users);
+//                        _shipperHndBcontext.SaveChanges();
+//                    }
+//                }
+//                catch (Exception e)
+//                {
+//                    _logControl.AddLog(1, "FetchData.cs/Run", "Type: " + e.GetType()
+//                        + " | Message: " + e.Message + " | InnerException: " + e.InnerException);
+//                }
+//                // set fetch flag to running
+//                WebConfigurationManager.AppSettings["FetchFlag"] = "Running";
+//                int count = 0; //count of sessions
+//                GetAccessToken();
+//                //GetAccessTokenKey();
+//                while (count < 5000)
+//                {
+//                    count++;
+//                    try
+//                    {
+//                        DoFetch();
+//                    }
+//                    catch (WebExceptionWrapper e)
+//                    {
+//                        _logControl.AddLog(1, "FetchData.cs/Run", "Type: " + e.GetType()
+//                        + " | Message: " + e.Message + " | InnerException: " + e.InnerException);
+//                        Thread.Sleep(500);
+//                    }
+//                    Thread.Sleep(500);
+//                }
+//
+//                // reset fetch flag
+//                WebConfigurationManager.AppSettings["FetchFlag"] = "Pausing";
+//            }
         }
 
     }

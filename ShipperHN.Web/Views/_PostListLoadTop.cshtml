@@ -1,0 +1,78 @@
+﻿@using ShipperHN.Business.Entities
+@model List<Post>
+@foreach (Post post in Model)
+{
+  <article data-id="@post.Id"
+           data-time="@post.InsertTime"
+           style="-webkit-animation: background 10s; 
+                -moz-animation: background 10s;
+                -o-animation: background 10s;
+               animation: background 10s;
+               animation-iteration-count: 1;"
+           >
+    <div class="post-preview">
+      <a class="post-avatar" href=@string.Format(string.IsNullOrEmpty(post.User.UserId)
+                                    ? post.User.UserProfileUrl : "https://www.facebook.com/" + post.User.Id)>
+        <img src=@string.Format(string.IsNullOrEmpty(post.User.UserId)
+                   ?
+                   post.User.UserProfilePicture
+                   :
+                   "https://graph.facebook.com/" + post.User.UserId + "/picture?type=square")
+             alt="Avatar" />
+      </a>
+      <a class="post-name">@post.User.Name</a>
+      @if (post.User.PhoneNumbers.Count > 0)
+      {
+        foreach (PhoneNumber phoneNumber in post.User.PhoneNumbers)
+        {
+          <div class="post-phone">
+            <a href="tel:@phoneNumber.Phone">@phoneNumber.Phone</a>
+          </div>
+        }
+      }
+    </div>
+    <div class="post-content">
+      <div class="post-content-message">
+        <a>@Html.Raw(post.Message)</a>
+      </div>
+      @if (!string.IsNullOrEmpty(post.FullPicture))
+      {
+        <a class="full-picture">
+          <img src=@string.Format(post.FullPicture) alt="Full Picture" />
+        </a>
+      }
+
+      @foreach (Location location in post.Locations)
+      {
+        <div class="post-places">
+          <a style="background: @post.GetColor(location.Name)"
+             onclick='FilterByLocation("@location.Name", -1, this)'>
+            @location.Name
+          </a>
+          @for (int i = 0; i < location.Streets.Split(',').Length; i++)
+          {
+            if (!string.IsNullOrEmpty(location.Streets.Split(',')[i]))
+            {
+              <a style="background: @post.GetColor(location.Streets.Split(',')[i])"
+                 onclick='FilterByLocation("@location.Streets.Split(',')[i]", 14, this)'>
+                @location.Streets.Split(',')[i].Trim()
+              </a>
+            }
+          }
+        </div>
+      }
+
+
+      <div class="date">
+        <span>
+          @Html.Partial("~/Views/_Time.cshtml", post.CreatedTime)
+        </span>
+      </div>
+
+      <a class="view-on-facebook" href="https://m.facebook.com/@post.PostId" title="Mở trong Facebook">Xem trên Facebook</a>
+
+    </div>
+    <div class="clear"></div>
+  </article>
+}
+

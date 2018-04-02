@@ -16,8 +16,8 @@ namespace ShipperHN.Business.Entities
             "purple",
             "orange",
             "navy",
-            "gray",
-            "cornflowerblue",
+            "blueviolet",
+            "#593359",
             "brown",
             "limegreen"
         };
