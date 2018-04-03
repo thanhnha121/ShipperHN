@@ -248,6 +248,7 @@ namespace ShipperHN.Web.Controllers
                     if (string.IsNullOrEmpty(user_url)
                         || string.IsNullOrEmpty(message)
                         || string.IsNullOrEmpty(post_id)
+                        || message.Length < 20
                         )
                     {
                         continue;

@@ -97,19 +97,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/24/2018 21:00:08</publishTime>
     </File>
     <File Include="bin/ShipperHN.Business.dll">
-      <publishTime>04/01/2018 20:23:41</publishTime>
+      <publishTime>04/03/2018 22:08:08</publishTime>
     </File>
     <File Include="bin/ShipperHN.Business.dll.config">
       <publishTime>02/24/2018 21:00:07</publishTime>
     </File>
     <File Include="bin/ShipperHN.Business.pdb">
-      <publishTime>04/01/2018 20:23:41</publishTime>
+      <publishTime>04/03/2018 22:08:08</publishTime>
     </File>
     <File Include="bin/ShipperHN.Web.dll">
-      <publishTime>04/02/2018 07:11:56</publishTime>
+      <publishTime>04/03/2018 22:08:12</publishTime>
     </File>
     <File Include="bin/ShipperHN.Web.pdb">
-      <publishTime>04/02/2018 07:11:56</publishTime>
+      <publishTime>04/03/2018 22:08:12</publishTime>
     </File>
     <File Include="bin/System.Web.Helpers.dll">
       <publishTime>02/24/2018 21:00:08</publishTime>
@@ -163,7 +163,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/28/2018 07:01:26</publishTime>
     </File>
     <File Include="Content/images/new-logo.png">
-      <publishTime>03/28/2018 07:03:51</publishTime>
+      <publishTime>04/03/2018 22:06:52</publishTime>
     </File>
     <File Include="Content/images/options-menu-active.png">
       <publishTime>03/28/2018 06:55:41</publishTime>
@@ -191,6 +191,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Content/images/thumb.jpg">
       <publishTime>04/01/2018 20:20:53</publishTime>
+    </File>
+    <File Include="Content/images/thumb.png">
+      <publishTime>04/03/2018 21:55:18</publishTime>
     </File>
     <File Include="Content/loading-effect.css">
       <publishTime>04/01/2018 05:59:21</publishTime>
@@ -253,7 +256,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/24/2018 21:00:07</publishTime>
     </File>
     <File Include="Views/Post/index.cshtml">
-      <publishTime>04/01/2018 20:23:16</publishTime>
+      <publishTime>04/03/2018 22:05:22</publishTime>
     </File>
     <File Include="Views/Shared/_Loading.cshtml">
       <publishTime>02/24/2018 21:00:07</publishTime>

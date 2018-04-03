@@ -148,7 +148,7 @@
     <Content Include="Content\images\options-search-active.png" />
     <Content Include="Content\images\options-search-not-active.png" />
     <Content Include="Content\images\location-active.gif" />
-    <Content Include="Content\images\thumb.jpg" />
+    <Content Include="Content\images\thumb.png" />
     <Content Include="Content\loading-effect.css" />
     <Content Include="Content\Responsive.css" />
     <Content Include="Content\style.css" />
