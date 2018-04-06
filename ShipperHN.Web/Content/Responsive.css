@@ -6,7 +6,7 @@
         width: 140px;
     }
     div#location-nav {
-        height: 194px;
+        height: auto;
     }
     .post-content .post-content-message {
         font-size: 14px;

@@ -1,8 +1,8 @@
 ﻿@using System.Web.Optimization
 @using ShipperHN.Business.Entities
 @{
-    List<Post> posts = (List<Post>) ViewData["posts"];
-    string location = (string)ViewData["location"];
+  List<Post> posts = (List<Post>)ViewData["posts"];
+  string location = (string)ViewData["location"];
 }
 
 <!DOCTYPE html>
@@ -88,6 +88,17 @@
   <div id="location-div" data-location="@location"></div>
 
   @Scripts.Render("/bundles/js")
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-91399861-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-91399861-1');
+  </script>
+
 
 </body>
 </html>

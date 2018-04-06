@@ -572,11 +572,6 @@ footer {
         outline: none;
     }
 
-#top-loading,
-#bottom-loading {
-    margin: 50px 0;
-}
-
 #bottom-loading {
     border-top: 1px solid #ccc;
 }

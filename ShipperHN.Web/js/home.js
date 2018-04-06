@@ -130,12 +130,14 @@ function hideLoadingBottom() {
 
 function LoadBottom() {
   isLoadingBottom = true;
-  var list = $('article');
+  var list = $('#post-list article');
   var lastTime = list.eq(list.length - 1).attr('data-time');
   var location = $('#location-div').attr('data-location');
   var listIds = [];
-  for (var i = 0; i < list.length; i++) {
-    listIds.push(list.eq(i).attr('data-id') - 0);
+  for (var i = list.length - 30; i < list.length; i++) {
+    if (i >= 0) {
+      listIds.push(list.eq(i).attr('data-id') - 0);
+    }
   }
   $.ajax({
     url: UrlLoadMorePost,
@@ -157,11 +159,11 @@ function LoadBottom() {
 function LoadTop() {
 
   isLoadingTop = true;
-  var list = $('article');
+  var list = $('#post-list article');
   var topTime = list.eq(0).attr('data-time');
   var location = $('#location-div').attr('data-location');
   var listIds = [];
-  for (var i = 0; i < list.length; i++) {
+  for (var i = 0; i < list.length && i < 30; i++) {
     listIds.push(list.eq(i).attr('data-id') - 0);
   }
   $.ajax({
