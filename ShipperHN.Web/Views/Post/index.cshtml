@@ -22,7 +22,9 @@
   <meta property="og:url" content="http://shipperhn.com/" />
   <meta property="og:image" content="http://shipperhn.com//Content/images/thumb.png" />
   <meta property="og:description" content="ShipperHN - Tìm Ship nhanh nhất - Nhận Ship nhanh nhất!" />
-
+@*  <link href="https://unpkg.com/video.js/dist/video-js.css" rel="stylesheet">*@
+@*  <script src="https://unpkg.com/video.js/dist/video.js"></script>*@
+@*  <script src="https://unpkg.com/videojs-contrib-hls/dist/videojs-contrib-hls.js"></script>*@
 </head>
 <body onload="onload()">
   <div class="wrap">
@@ -69,6 +71,17 @@
       <div id="top-loading" style="display: none;">
         @Html.Partial("/Views/Shared/_Loading.cshtml")
       </div>
+      
+@*      <video id=example-video width=1000 height=540 class="video-js vjs-default-skin" controls>*@
+@*        <source*@
+@*          src="http://117.103.224.75:1935/live/smil:Haiphong1.smil/playlist.m3u8?token=xHhNYMNvyIbpNtP6%2FX%2Fo21hJ9HlcLi%2FIIF10f9SP0w16lJoxtLCbJS7vDEW7Mo9aUWLSZHVMtfBxj2%2BSJcwfkzct%2FRO6xm%2BNRzdYyfZzzcOdW%2Bgq%2BQA51tJ3b0lTisY56gMRaF%2BcEve64rKwraNoAodHvA%2BAMWsRvgeoThHlHjs%3D"*@
+@*          type="application/x-mpegURL">*@
+@*      </video>*@
+@*      *@
+@*      <script>*@
+@*        var player = videojs('example-video');*@
+@*        player.play();*@
+@*      </script>*@
 
       <div id="post-list">
         @Html.Partial("/Views/_PostList.cshtml", posts)
